@@ -1,0 +1,17 @@
+{
+  "id": "zweite-liga",
+  "name": "2. Bundesliga",
+  "shortName": "2.BL",
+  "country": "Deutschland",
+  "tier": 2,
+  "numberOfTeams": 18,
+  "matchdays": 34,
+  "promotion": { "automatic": 2, "playoff": 1 },
+  "relegation": { "automatic": 2, "playoff": 1 },
+  "tvMoney": { "first": 15000000, "last": 5000000 },
+  "internationalSpots": {
+    "championsLeague": 0,
+    "europaLeague": 0,
+    "conferenceLeague": 0
+  }
+}

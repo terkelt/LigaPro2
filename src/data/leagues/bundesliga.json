@@ -1,0 +1,17 @@
+{
+  "id": "bundesliga",
+  "name": "Bundesliga",
+  "shortName": "BL",
+  "country": "Deutschland",
+  "tier": 1,
+  "numberOfTeams": 18,
+  "matchdays": 34,
+  "promotion": { "automatic": 0, "playoff": 0 },
+  "relegation": { "automatic": 2, "playoff": 1 },
+  "tvMoney": { "first": 70000000, "last": 30000000 },
+  "internationalSpots": {
+    "championsLeague": 4,
+    "europaLeague": 1,
+    "conferenceLeague": 1
+  }
+}
