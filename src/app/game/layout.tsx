@@ -1,7 +1,5 @@
-"use client";
-
 import { useEffect, useMemo, useState, useCallback, useRef } from "react";
-import { useRouter } from "next/navigation";
+import { useNavigate, Outlet } from "react-router-dom";
 import { TopNav } from "@/components/layout/TopNav";
 import { CalendarSimulation } from "@/components/game/CalendarSimulation";
 import { PackOpener } from "@/components/game/PackOpener";
@@ -17,12 +15,8 @@ import { useToast } from "@/hooks/use-toast";
 import { VersionBadge } from "@/components/ui/version-badge";
 import { Pack } from "@/types/packs";
 
-export default function GameLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  const router = useRouter();
+export default function GameLayout() {
+  const navigate = useNavigate();
   const isLoaded = useIsLoaded();
   const hasGameState = useHasGameState();
   const saveCurrentGame = useGameStore((s) => s.saveCurrentGame);
@@ -79,20 +73,11 @@ export default function GameLayout({
 
   useEffect(() => {
     if (!isLoaded || !hasGameState) {
-      router.replace("/");
+      navigate("/", { replace: true });
     }
-  }, [isLoaded, hasGameState, router]);
+  }, [isLoaded, hasGameState, navigate]);
 
-  // Prefetch all game routes on mount so they compile immediately
-  useEffect(() => {
-    const routes = [
-      "/game/dashboard", "/game/squad", "/game/tactics", "/game/schedule",
-      "/game/table", "/game/transfers", "/game/finances", "/game/training",
-      "/game/youth", "/game/staff", "/game/stats", "/game/manager",
-      "/game/news", "/game/cup", "/game/international", "/game/cards",
-    ];
-    routes.forEach((r) => router.prefetch(r));
-  }, [router]);
+  // Prefetch removed — not needed in desktop app
 
   const { nextOpponentName, nextMatchDate } = useMemo(() => {
     if (!mySchedule) return { nextOpponentName: undefined, nextMatchDate: undefined };
@@ -135,8 +120,8 @@ export default function GameLayout({
         isMatchDay={isPreseason ? false : (agenda?.isMatchDay ?? false)}
       />
       <div className="flex-1 flex flex-col relative overflow-hidden">
-        <main className="flex-1 p-4 overflow-y-auto">{children}</main>
-        <VersionBadge className="absolute bottom-1 right-2" />
+        <main className="flex-1 px-3 py-3 overflow-y-auto"><Outlet /></main>
+        <VersionBadge className="absolute bottom-1 right-2 opacity-30 hover:opacity-60 transition-opacity" />
       </div>
 
       {showCalendarSim && (

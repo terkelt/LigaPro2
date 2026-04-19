@@ -1,7 +1,5 @@
-"use client";
-
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useResults, useTeams, useAllPlayers, useCurrentTeamId, useSchedules, useTactics, calcOverall, useSponsors, useTables, useLeagues } from "@/store/selectors";
 import { useGameStore } from "@/store/game-store";
@@ -12,7 +10,7 @@ import { MatchEvent, MatchResult } from "@/types/match";
 import { Player } from "@/types/player";
 import { createLiveMatch, advanceLiveMatch, finalizeLiveMatch, performPlayerSubstitution, LiveMatchContext, applyShout, applyHalftimeTalk, SHOUT_CATALOG, HALFTIME_TALKS, ShoutType, HalftimeTalkType } from "@/lib/match-engine";
 import MatchTickerView from "@/components/match/MatchTickerView";
-import { Match2DCanvas } from "@/components/match/Match2DCanvas";
+import { PixiMatch2DCanvas } from "@/components/match/PixiMatch2DCanvas";
 import { PostMatchAnalysis } from "@/components/match/PostMatchAnalysis";
 import { generateMatchAnalysis } from "@/lib/match-analysis";
 import { soundManager } from "@/lib/sound-manager";
@@ -563,8 +561,8 @@ function generateDecision(ctx: LiveMatchContext, currentTeamId: string, forceTyp
 
 export default function MatchDetailPage() {
   const params = useParams();
-  const router = useRouter();
-  const searchParams = useSearchParams();
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const results = useResults();
   const teams = useTeams();
   const allPlayers = useAllPlayers();
@@ -1100,7 +1098,7 @@ export default function MatchDetailPage() {
         awayTeam={awayTeam ? { id: awayTeam.id, name: awayTeam.name, shortName: awayTeam.shortName, colors: awayTeam.colors } : undefined}
         currentTeamId={currentTeamId}
         findPlayer={findPlayer}
-        onContinue={() => router.push('/game/dashboard')}
+        onContinue={() => navigate('/game/dashboard')}
         otherResults={postMatchData.otherResults}
         leagueTable={postMatchData.leagueTable}
         allTeams={postMatchData.allTeamsMapped}
@@ -1187,7 +1185,7 @@ export default function MatchDetailPage() {
 
           <div className="relative z-10 flex items-center w-full">
             {result ? (
-              <Button variant="ghost" size="sm" className="shrink-0 h-8 text-xs" onClick={() => router.push('/game/dashboard')}>
+              <Button variant="ghost" size="sm" className="shrink-0 h-8 text-xs" onClick={() => navigate('/game/dashboard')}>
                 <ArrowLeft className="w-3.5 h-3.5 mr-1" />Zurück
               </Button>
             ) : (
@@ -1302,10 +1300,10 @@ export default function MatchDetailPage() {
 
         {/* ── CENTER: 2D Pitch + Live-Ticker ── */}
         <div className="flex-1 flex flex-col min-w-0">
-          {/* 2D Canvas Pitch (only during live play) */}
+          {/* 2.5D PixiJS Pitch (only during live play) */}
           {isLive && liveCtx && (
             <div className="shrink-0 h-[60%] min-h-[280px] border-b border-border/30 bg-black/20">
-              <Match2DCanvas
+              <PixiMatch2DCanvas
                 ctx={liveCtx}
                 homeFormation={tactics?.[activeTactic]?.formation}
                 awayFormation={undefined}

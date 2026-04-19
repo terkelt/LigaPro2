@@ -1,7 +1,5 @@
-"use client";
-
 import { useMemo } from "react";
-import { useRouter } from "next/navigation";
+import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useGameStore } from "@/store/game-store";
 import { useTeams, useCurrentTeamId, useResults } from "@/store/selectors";
@@ -10,7 +8,7 @@ import { Trophy, CheckCircle, XCircle, Clock, Swords, Eye } from "lucide-react";
 import { getCupName } from "@/lib/cup-engine";
 
 export default function CupPage() {
-  const router = useRouter();
+  const navigate = useNavigate();
   const cupState = useGameStore((s) => s.gameState?.cupState ?? null);
   const gameState = useGameStore((s) => s.gameState);
   const teams = useTeams();
@@ -154,7 +152,7 @@ export default function CupPage() {
                           {match.isPlayed && match.result ? (
                             <button
                               className="flex items-center gap-1.5 hover:text-primary transition-colors cursor-pointer group bg-muted/50 hover:bg-muted px-2 py-0.5 rounded"
-                              onClick={() => router.push(`/game/match/${match.id}`)}
+                              onClick={() => navigate(`/game/match/${match.id}`)}
                               title="Spiel ansehen"
                             >
                               <span className="text-sm font-bold tabular-nums">

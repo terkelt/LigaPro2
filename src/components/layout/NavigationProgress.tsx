@@ -1,7 +1,9 @@
-"use client";
-
 import { useEffect, useState, useRef, useCallback } from "react";
-import { usePathname } from "next/navigation";
+import { useLocation } from "react-router-dom";
+
+function usePathname() {
+  return useLocation().pathname;
+}
 
 export function NavigationProgress() {
   const pathname = usePathname();

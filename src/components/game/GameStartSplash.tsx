@@ -1,7 +1,5 @@
-"use client";
-
 import { useCallback, useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { TeamLogo } from "@/components/ui/team-logo";
 import { Team } from "@/types/team";
@@ -64,7 +62,7 @@ function SkillBar({ value, max = 20 }: { value: number; max?: number }) {
 }
 
 export function GameStartSplash({ team, manager, onComplete }: Props) {
-  const router = useRouter();
+  const navigate = useNavigate();
   const [phaseIdx, setPhaseIdx] = useState(0);
   const phase = PHASES[phaseIdx];
 
@@ -79,8 +77,8 @@ export function GameStartSplash({ team, manager, onComplete }: Props) {
 
   const handleStart = useCallback(() => {
     onComplete();
-    router.push('/game/preseason');
-  }, [onComplete, router]);
+    navigate('/game/preseason');
+  }, [onComplete, navigate]);
 
   // Skip on click (advance to next phase, or start if at ready)
   const handleClick = useCallback(() => {

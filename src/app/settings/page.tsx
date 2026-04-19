@@ -1,6 +1,4 @@
-"use client";
-
-import { useRouter } from "next/navigation";
+import { useNavigate } from "react-router-dom";
 import { ArrowLeft, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -19,7 +17,7 @@ import { soundManager } from "@/lib/sound-manager";
 import { useState, useEffect } from "react";
 
 export default function SettingsPage() {
-  const router = useRouter();
+  const navigate = useNavigate();
   const { settings, updateSetting, resetSettings } = useSettingsStore();
   const [soundSettings, setSoundSettings] = useState(soundManager.getSettings());
 
@@ -40,7 +38,7 @@ export default function SettingsPage() {
           <Button
             variant="ghost"
             size="icon"
-            onClick={() => router.back()}
+            onClick={() => navigate(-1)}
           >
             <ArrowLeft className="w-5 h-5" />
           </Button>

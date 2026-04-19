@@ -1,0 +1,10 @@
+{
+  "$schema": "https://raw.githubusercontent.com/nicoviii/tauri-v2/tauri-v2-schema/capabilities-schema.json",
+  "identifier": "default",
+  "description": "Default capabilities for Liga Pro",
+  "windows": ["main"],
+  "permissions": [
+    "core:default",
+    "shell:allow-open"
+  ]
+}

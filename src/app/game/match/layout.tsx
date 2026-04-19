@@ -1,7 +1,5 @@
-"use client";
-
 import { useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useNavigate, Outlet } from "react-router-dom";
 import { useGameStore } from "@/store/game-store";
 import { VersionBadge } from "@/components/ui/version-badge";
 
@@ -9,16 +7,16 @@ import { VersionBadge } from "@/components/ui/version-badge";
  * Match layout — fullscreen without sidebar/header.
  * Overrides the parent game layout's sidebar+header for match pages.
  */
-export default function MatchLayout({ children }: { children: React.ReactNode }) {
-  const router = useRouter();
+export default function MatchLayout() {
+  const navigate = useNavigate();
   const hasGameState = useGameStore((s) => !!s.gameState);
   const isLoaded = useGameStore((s) => s.isLoaded);
 
   useEffect(() => {
     if (isLoaded && !hasGameState) {
-      router.replace("/");
+      navigate("/", { replace: true });
     }
-  }, [isLoaded, hasGameState, router]);
+  }, [isLoaded, hasGameState, navigate]);
 
   if (!hasGameState) {
     return (
@@ -30,7 +28,7 @@ export default function MatchLayout({ children }: { children: React.ReactNode })
 
   return (
     <div className="fixed inset-0 z-50 bg-background overflow-hidden flex flex-col">
-      {children}
+      <Outlet />
       <VersionBadge className="absolute bottom-1 right-2" />
     </div>
   );

@@ -1,7 +1,5 @@
-"use client";
-
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Pause, Play, FastForward, SkipForward, X, Mic, ChevronRight, Trophy, TrendingUp, Shield, Swords, AlertTriangle } from "lucide-react";
@@ -58,7 +56,7 @@ interface Props {
 }
 
 export function CalendarSimulation({ onClose }: Props) {
-  const router = useRouter();
+  const navigate = useNavigate();
   const gameState = useGameStore((s) => s.gameState);
   const advanceOneDay = useGameStore((s) => s.advanceOneDay);
   const answerPressQuestion = useGameStore((s) => s.answerPressQuestion);
@@ -306,7 +304,7 @@ export function CalendarSimulation({ onClose }: Props) {
     const matchId = matchPreview.matchId;
     // Navigate to live match — simulation happens on the match page
     onClose();
-    router.push(`/game/match/${matchId}`);
+    navigate(`/game/match/${matchId}`);
   };
 
   return (
@@ -513,7 +511,7 @@ export function CalendarSimulation({ onClose }: Props) {
                         </div>
                       </div>
                       <div className="flex gap-2 pt-2">
-                        <Button variant="outline" className="flex-1 text-xs gap-1" onClick={() => { onClose(); router.push("/game/tactics"); }}>
+                        <Button variant="outline" className="flex-1 text-xs gap-1" onClick={() => { onClose(); navigate("/game/tactics"); }}>
                           Aufstellung bearbeiten
                         </Button>
                         <Button className="flex-1 text-xs gap-1 bg-amber-600 hover:bg-amber-600/90" onClick={() => {
@@ -525,14 +523,14 @@ export function CalendarSimulation({ onClose }: Props) {
                     </>
                   ) : (
                     <div className="flex gap-2 pt-2">
-                      <Button variant="outline" className="text-xs gap-1" onClick={() => { onClose(); router.push("/game/tactics"); }}>
+                      <Button variant="outline" className="text-xs gap-1" onClick={() => { onClose(); navigate("/game/tactics"); }}>
                         Aufstellung prüfen
                       </Button>
                       {matchPreview.oppTopPlayers.length === 0 ? (
                         <Button className="flex-1 text-xs gap-1 bg-amber-600 hover:bg-amber-600/90" onClick={() => {
                           // D11: Opponent has no players (amateur team) — instant calculation only
                           onClose();
-                          router.push(`/game/match/${matchPreview.matchId}?speed=instant`);
+                          navigate(`/game/match/${matchPreview.matchId}?speed=instant`);
                         }}>
                           ⚡ Sofortberechnung <ChevronRight className="w-3 h-3" />
                         </Button>

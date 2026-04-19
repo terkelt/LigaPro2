@@ -1,7 +1,5 @@
-"use client";
-
 import { useState, useMemo } from "react";
-import { useRouter } from "next/navigation";
+import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight, Calendar } from "lucide-react";
@@ -9,7 +7,7 @@ import { useMySchedule, useLeagues, useTeams, useCurrentTeamId, useSeason } from
 import { TeamLogo } from "@/components/ui/team-logo";
 
 export default function SchedulePage() {
-  const router = useRouter();
+  const navigate = useNavigate();
   const currentTeamId = useCurrentTeamId();
   const schedule = useMySchedule();
   const leagues = useLeagues();
@@ -104,7 +102,7 @@ export default function SchedulePage() {
                   <div
                     key={match.id}
                     className={`grid grid-cols-[1fr_24px_56px_24px_1fr_auto] items-center gap-1 px-4 py-3 border-b border-border/50 ${isMyMatch ? "bg-primary/5" : "hover:bg-secondary/20"} ${result ? "cursor-pointer" : ""}`}
-                    onClick={() => result && router.push(`/game/match/${match.id}`)}
+                    onClick={() => result && navigate(`/game/match/${match.id}`)}
                   >
                     <span className={`text-sm font-medium text-right truncate ${isMyMatch && match.homeTeamId === currentTeamId ? "text-primary" : ""}`}>
                       {home?.name ?? "?"}

@@ -1,7 +1,5 @@
-"use client";
-
 import { useCallback, useMemo, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { TrendingUp, SkipForward } from "lucide-react";
@@ -24,7 +22,7 @@ import type { TrainingCampLocation, PreseasonEvent, FriendlyMatch, TacticalFocus
 import { generateCampSponsorOffer } from "@/lib/sponsor-engine";
 
 export default function PreseasonPage() {
-  const router = useRouter();
+  const navigate = useNavigate();
   const team = useMyTeam();
   const players = useMyPlayers();
   const finances = useMyFinances();
@@ -175,8 +173,8 @@ export default function PreseasonPage() {
     });
 
     // Redirect to dashboard — normal day-advance will handle friendlies + league start
-    router.push('/game/dashboard');
-  }, [gameState, currentTeamId, currentDate, budget, team, setGameState, tacticalFocus, router]);
+    navigate('/game/dashboard');
+  }, [gameState, currentTeamId, currentDate, budget, team, setGameState, tacticalFocus, navigate]);
 
   // ── Dev Mode: Skip preseason entirely ──
   const handleSkipPreseason = useCallback(() => {
@@ -191,8 +189,8 @@ export default function PreseasonPage() {
         squadAssessment: generateSquadAssessment(gameState.players, currentTeamId),
       },
     });
-    router.push('/game/dashboard');
-  }, [gameState, currentTeamId, setGameState, router]);
+    navigate('/game/dashboard');
+  }, [gameState, currentTeamId, setGameState, navigate]);
 
   // ── RENDER ──
 
@@ -202,7 +200,7 @@ export default function PreseasonPage() {
       <div className="flex items-center justify-center h-screen">
         <div className="text-center space-y-4">
           <p className="text-muted-foreground">Lade Saisonvorbereitung...</p>
-          <Button onClick={() => router.push('/game/dashboard')}>
+          <Button onClick={() => navigate('/game/dashboard')}>
             Zum Dashboard
           </Button>
         </div>
@@ -220,7 +218,7 @@ export default function PreseasonPage() {
             <p className="text-4xl">🏟️</p>
             <h2 className="text-xl font-bold">Vorbereitung läuft!</h2>
             <p className="text-muted-foreground">Testspiele und Saisonstart findest du im Dashboard.</p>
-            <Button size="lg" onClick={() => router.push('/game/dashboard')}>
+            <Button size="lg" onClick={() => navigate('/game/dashboard')}>
               Zum Dashboard →
             </Button>
           </CardContent>
@@ -414,7 +412,7 @@ export default function PreseasonPage() {
           <p className="text-4xl">🏟️</p>
           <h2 className="text-xl font-bold">Trainingslager abgeschlossen!</h2>
           <p className="text-muted-foreground">Die Vorbereitung läuft. Testspiele und Saisonstart findest du im Dashboard.</p>
-          <Button size="lg" onClick={() => router.push('/game/dashboard')}>
+          <Button size="lg" onClick={() => navigate('/game/dashboard')}>
             Zum Dashboard →
           </Button>
         </CardContent>

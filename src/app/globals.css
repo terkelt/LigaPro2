@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Oswald:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300..900&family=Oswald:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
 @import "tw-animate-css";
 
@@ -32,43 +32,55 @@
   --radius-lg: var(--radius);
   --radius-md: calc(var(--radius) - 2px);
   --radius-sm: calc(var(--radius) - 4px);
-  --font-sans: 'Inter', sans-serif;
+  --font-sans: 'Inter', system-ui, sans-serif;
   --font-display: 'Oswald', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
 }
 
-/* ═══ "Midnight Stadium" Color Palette — v2 ═══
- * TRUE black background with high-contrast neon accents.
- * Inspired by broadcast overlays on Champions League nights.
- */
+/* ═══════════════════════════════════════════════════════════
+ *  "BROADCAST NIGHT" — Premium Sports Dashboard Theme v3
+ *  Inspired by Sky Sports, ESPN, and FIFA broadcast overlays.
+ *  Deep-black layers with electric blue + gold accents.
+ * ═══════════════════════════════════════════════════════════ */
 :root {
-  --background: 220 20% 3%;
-  --foreground: 0 0% 96%;
-  --card: 220 16% 7%;
-  --card-foreground: 0 0% 96%;
-  --popover: 220 18% 8%;
-  --popover-foreground: 0 0% 96%;
-  --primary: 210 100% 52%;
+  /* ── Surface layers (depth hierarchy) ── */
+  --background: 225 22% 3%;        /* Deepest black */
+  --foreground: 220 10% 95%;       /* Soft white */
+  --card: 225 18% 6%;              /* Card surface */
+  --card-foreground: 220 10% 95%;
+  --popover: 225 20% 7%;           /* Dropdown/modal */
+  --popover-foreground: 220 10% 95%;
+  --secondary: 225 14% 10%;        /* Subtle containers */
+  --secondary-foreground: 220 8% 80%;
+  --muted: 225 12% 8%;             /* Muted backgrounds */
+  --muted-foreground: 225 8% 42%;  /* Subdued text */
+
+  /* ── Brand colors ── */
+  --primary: 213 94% 54%;          /* Electric Blue — slightly warmer */
   --primary-foreground: 0 0% 100%;
-  --secondary: 220 14% 12%;
-  --secondary-foreground: 0 0% 85%;
-  --muted: 220 12% 10%;
-  --muted-foreground: 220 10% 45%;
-  --accent: 42 100% 54%;
-  --accent-foreground: 220 20% 4%;
-  --destructive: 0 80% 55%;
+  --accent: 40 100% 56%;           /* Stadium Gold */
+  --accent-foreground: 225 22% 4%;
+  --destructive: 0 72% 52%;
   --destructive-foreground: 0 0% 98%;
-  --border: 220 14% 13%;
-  --input: 220 14% 13%;
-  --ring: 210 100% 52%;
-  --chart-1: 210 100% 52%;
-  --chart-2: 42 100% 54%;
+
+  /* ── Borders + inputs ── */
+  --border: 225 12% 11%;           /* Subtle edges */
+  --input: 225 14% 11%;
+  --ring: 213 94% 54%;
+
+  /* ── Charts ── */
+  --chart-1: 213 94% 54%;
+  --chart-2: 40 100% 56%;
   --chart-3: 152 65% 42%;
   --chart-4: 280 70% 62%;
   --chart-5: 340 80% 58%;
-  --radius: 0.625rem;
+
+  /* ── Semantic ── */
+  --radius: 0.75rem;
   --pitch: 152 55% 28%;
-  --topnav: 220 20% 4%;
-  --surface-elevated: 220 16% 9%;
+  --topnav: 225 22% 4%;
+  --surface-elevated: 225 16% 8%;
+  --surface-overlay: 225 20% 5%;
 }
 
 * {
@@ -81,53 +93,111 @@ body {
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+  text-rendering: optimizeLegibility;
 }
 
-/* ═══ Design System Utilities ═══ */
+/* ═══ GLASS & SURFACE SYSTEM ═══ */
 
 .glass-panel {
-  background: hsl(var(--card) / 0.7);
-  backdrop-filter: blur(16px) saturate(1.3);
-  -webkit-backdrop-filter: blur(16px) saturate(1.3);
-  border: 1px solid hsl(var(--border) / 0.5);
+  background: hsl(var(--card) / 0.65);
+  backdrop-filter: blur(20px) saturate(1.4);
+  -webkit-backdrop-filter: blur(20px) saturate(1.4);
+  border: 1px solid hsl(var(--border) / 0.6);
 }
+
+.glass-panel-strong {
+  background: hsl(var(--card) / 0.85);
+  backdrop-filter: blur(24px) saturate(1.5);
+  -webkit-backdrop-filter: blur(24px) saturate(1.5);
+  border: 1px solid hsl(var(--border) / 0.7);
+}
+
+/* ═══ TILE SYSTEM (cards with depth) ═══ */
 
 .tile {
   border-radius: var(--radius);
-  border: 1px solid hsl(var(--border));
-  background: linear-gradient(135deg, hsl(var(--card)) 0%, hsl(var(--card) / 0.7) 100%);
-  transition: all 0.25s cubic-bezier(.4,0,.2,1);
-  box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+  border: 1px solid hsl(var(--border) / 0.8);
+  background: hsl(var(--card));
+  transition: all 0.2s cubic-bezier(.22,1,.36,1);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.4), 0 0 0 1px hsl(var(--border) / 0.1);
 }
 .tile:hover {
-  border-color: hsl(var(--primary) / 0.5);
-  box-shadow: 0 8px 32px hsl(var(--primary) / 0.12), 0 2px 8px rgba(0,0,0,0.3);
+  border-color: hsl(var(--primary) / 0.3);
+  box-shadow: 0 4px 24px hsl(var(--primary) / 0.08), 0 1px 4px rgba(0,0,0,0.4);
+  transform: translateY(-1px);
+}
+
+/* Interactive tile — stronger hover */
+.tile-interactive {
+  border-radius: var(--radius);
+  border: 1px solid hsl(var(--border) / 0.8);
+  background: hsl(var(--card));
+  transition: all 0.2s cubic-bezier(.22,1,.36,1);
+  box-shadow: 0 1px 2px rgba(0,0,0,0.4);
+  cursor: pointer;
+}
+.tile-interactive:hover {
+  border-color: hsl(var(--primary) / 0.4);
+  background: hsl(var(--surface-elevated));
+  box-shadow: 0 8px 32px hsl(var(--primary) / 0.1), 0 2px 8px rgba(0,0,0,0.3);
   transform: translateY(-2px);
 }
+.tile-interactive:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+}
+
+/* Stat tile — inset feel */
+.tile-stat {
+  border-radius: var(--radius);
+  border: 1px solid hsl(var(--border) / 0.5);
+  background: linear-gradient(145deg, hsl(var(--card)) 0%, hsl(var(--muted)) 100%);
+  transition: all 0.2s cubic-bezier(.22,1,.36,1);
+}
+.tile-stat:hover {
+  border-color: hsl(var(--primary) / 0.3);
+  background: linear-gradient(145deg, hsl(var(--surface-elevated)) 0%, hsl(var(--card)) 100%);
+}
+
+/* ═══ GLOW EFFECTS ═══ */
 
 .glow-primary {
-  box-shadow: 0 0 24px hsl(var(--primary) / 0.25), 0 0 80px hsl(var(--primary) / 0.08), inset 0 0 20px hsl(var(--primary) / 0.04);
+  box-shadow: 0 0 20px hsl(var(--primary) / 0.2), 0 0 60px hsl(var(--primary) / 0.06);
 }
-
 .glow-accent {
-  box-shadow: 0 0 24px hsl(var(--accent) / 0.25), 0 0 80px hsl(var(--accent) / 0.08), inset 0 0 20px hsl(var(--accent) / 0.04);
+  box-shadow: 0 0 20px hsl(var(--accent) / 0.2), 0 0 60px hsl(var(--accent) / 0.06);
+}
+.glow-subtle {
+  box-shadow: 0 0 40px hsl(var(--primary) / 0.04);
 }
 
-/* Neon text glow */
+/* ═══ NEON TEXT ═══ */
+
 .neon-primary {
-  text-shadow: 0 0 8px hsl(var(--primary) / 0.5), 0 0 24px hsl(var(--primary) / 0.2);
+  text-shadow: 0 0 10px hsl(var(--primary) / 0.4), 0 0 40px hsl(var(--primary) / 0.12);
 }
 .neon-accent {
-  text-shadow: 0 0 8px hsl(var(--accent) / 0.5), 0 0 24px hsl(var(--accent) / 0.2);
+  text-shadow: 0 0 10px hsl(var(--accent) / 0.4), 0 0 40px hsl(var(--accent) / 0.12);
 }
 
-/* Stadium gradient background overlay */
+/* ═══ BACKGROUND SURFACES ═══ */
+
 .stadium-bg {
-  background: radial-gradient(ellipse 120% 80% at 50% 20%, hsl(152 40% 8% / 0.5) 0%, transparent 60%),
-              linear-gradient(to bottom, hsl(var(--background)) 0%, hsl(220 15% 4%) 100%);
+  background:
+    radial-gradient(ellipse 100% 60% at 50% 0%, hsl(var(--primary) / 0.03) 0%, transparent 50%),
+    radial-gradient(ellipse 80% 50% at 80% 80%, hsl(152 40% 8% / 0.25) 0%, transparent 50%),
+    hsl(var(--background));
 }
 
-/* Card with subtle border glow on hover */
+.surface-inset {
+  background: hsl(var(--muted) / 0.5);
+  border: 1px solid hsl(var(--border) / 0.4);
+  border-radius: var(--radius);
+}
+
+/* ═══ CARD GLOW BORDER (gradient outline on hover) ═══ */
+
 .card-glow {
   position: relative;
 }
@@ -136,7 +206,7 @@ body {
   position: absolute;
   inset: -1px;
   border-radius: inherit;
-  background: linear-gradient(135deg, hsl(var(--primary) / 0.15), transparent 50%, hsl(var(--accent) / 0.1));
+  background: linear-gradient(135deg, hsl(var(--primary) / 0.12), transparent 50%, hsl(var(--accent) / 0.08));
   z-index: -1;
   opacity: 0;
   transition: opacity 0.3s;
@@ -145,23 +215,77 @@ body {
   opacity: 1;
 }
 
+/* ═══ SECTION HEADERS ═══ */
+
+.section-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  color: hsl(var(--muted-foreground));
+  text-transform: uppercase;
+}
+
+/* ═══ METRIC BADGE (inline stat pill) ═══ */
+
+.metric-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.625rem;
+  font-weight: 600;
+  padding: 0.125rem 0.5rem;
+  border-radius: 9999px;
+  background: hsl(var(--secondary));
+  color: hsl(var(--secondary-foreground));
+  white-space: nowrap;
+}
+
+/* ═══ PROGRESS BAR (slim) ═══ */
+
+.progress-bar {
+  height: 0.25rem;
+  border-radius: 9999px;
+  background: hsl(var(--secondary));
+  overflow: hidden;
+}
+.progress-bar > div {
+  height: 100%;
+  border-radius: 9999px;
+  transition: width 0.4s cubic-bezier(.22,1,.36,1);
+}
+
+/* ═══ ANIMATIONS ═══ */
+
 @keyframes float-subtle {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-3px); }
 }
 
 @keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 12px hsl(var(--primary) / 0.25); }
-  50% { box-shadow: 0 0 28px hsl(var(--primary) / 0.5); }
+  0%, 100% { box-shadow: 0 0 12px hsl(var(--primary) / 0.2); }
+  50% { box-shadow: 0 0 24px hsl(var(--primary) / 0.4); }
 }
 
 @keyframes slide-up-fade {
-  from { opacity: 0; transform: translateY(12px); }
+  from { opacity: 0; transform: translateY(8px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
+@keyframes slide-down-fade {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scale-in {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
 @keyframes count-up {
-  from { opacity: 0; transform: scale(0.8); }
+  from { opacity: 0; transform: scale(0.85); }
   to { opacity: 1; transform: scale(1); }
 }
 
@@ -170,18 +294,66 @@ body {
   100% { background-position: 200% 0; }
 }
 
-.animate-float { animation: float-subtle 3s ease-in-out infinite; }
-.animate-glow { animation: pulse-glow 2s ease-in-out infinite; }
-.animate-slide-up { animation: slide-up-fade 0.4s cubic-bezier(.4,0,.2,1) both; }
-.animate-count-up { animation: count-up 0.5s cubic-bezier(.4,0,.2,1) both; }
-.animate-shimmer {
-  background: linear-gradient(90deg, transparent 25%, hsl(var(--primary) / 0.08) 50%, transparent 75%);
-  background-size: 200% 100%;
-  animation: shimmer 2s infinite;
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
-/* Scrollbar styling */
-::-webkit-scrollbar { width: 6px; height: 6px; }
+@keyframes pulse-soft {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+.animate-float { animation: float-subtle 3s ease-in-out infinite; }
+.animate-glow { animation: pulse-glow 2s ease-in-out infinite; }
+.animate-slide-up { animation: slide-up-fade 0.35s cubic-bezier(.22,1,.36,1) both; }
+.animate-slide-down { animation: slide-down-fade 0.3s cubic-bezier(.22,1,.36,1) both; }
+.animate-scale-in { animation: scale-in 0.25s cubic-bezier(.22,1,.36,1) both; }
+.animate-count-up { animation: count-up 0.4s cubic-bezier(.22,1,.36,1) both; }
+.animate-fade-in { animation: fade-in 0.3s ease both; }
+.animate-pulse-soft { animation: pulse-soft 2s ease-in-out infinite; }
+.animate-shimmer {
+  background: linear-gradient(90deg, transparent 25%, hsl(var(--primary) / 0.06) 50%, transparent 75%);
+  background-size: 200% 100%;
+  animation: shimmer 2.5s infinite;
+}
+
+/* Stagger children */
+.stagger-children > * {
+  animation: slide-up-fade 0.35s cubic-bezier(.22,1,.36,1) both;
+}
+.stagger-children > *:nth-child(1) { animation-delay: 0ms; }
+.stagger-children > *:nth-child(2) { animation-delay: 50ms; }
+.stagger-children > *:nth-child(3) { animation-delay: 100ms; }
+.stagger-children > *:nth-child(4) { animation-delay: 150ms; }
+.stagger-children > *:nth-child(5) { animation-delay: 200ms; }
+.stagger-children > *:nth-child(6) { animation-delay: 250ms; }
+.stagger-children > *:nth-child(7) { animation-delay: 300ms; }
+.stagger-children > *:nth-child(8) { animation-delay: 350ms; }
+
+/* ═══ SCROLLBAR ═══ */
+
+::-webkit-scrollbar { width: 5px; height: 5px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: hsl(var(--border)); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: hsl(var(--muted-foreground) / 0.4); }
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--border));
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--muted-foreground) / 0.3);
+}
+
+/* ═══ SELECTION ═══ */
+
+::selection {
+  background: hsl(var(--primary) / 0.25);
+  color: hsl(var(--foreground));
+}
+
+/* ═══ FOCUS RING ═══ */
+
+:focus-visible {
+  outline: 2px solid hsl(var(--primary) / 0.5);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}

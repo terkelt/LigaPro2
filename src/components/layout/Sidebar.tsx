@@ -1,7 +1,8 @@
-"use client";
+import { Link, useLocation } from "react-router-dom";
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+function usePathname() {
+  return useLocation().pathname;
+}
 import { cn } from "@/lib/utils";
 import {
   LayoutDashboard,
@@ -161,7 +162,7 @@ export function Sidebar() {
       <aside className="fixed left-0 top-0 z-40 h-screen w-14 bg-[hsl(var(--sidebar))] border-r border-border flex flex-col transition-all duration-300">
         {/* Logo */}
         <div className="h-14 flex items-center justify-center border-b border-border shrink-0">
-          <Link href="/" className="text-primary font-display font-bold text-sm">LP</Link>
+          <Link to="/" className="text-primary font-display font-bold text-sm">LP</Link>
         </div>
 
         {/* Grouped nav */}
@@ -256,7 +257,7 @@ export function Sidebar() {
       {/* Logo */}
       <div className="h-14 flex items-center px-4 border-b border-border shrink-0">
         {!collapsed && (
-          <Link href="/" className="flex items-center gap-2">
+          <Link to="/" className="flex items-center gap-2">
             <span className="font-display text-xl font-bold">
               <span className="text-primary">LIGA</span>{" "}
               <span className="text-accent">PRO</span>

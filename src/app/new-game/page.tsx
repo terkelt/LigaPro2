@@ -1,7 +1,5 @@
-"use client";
-
 import { useState, useMemo, useCallback, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useNavigate } from "react-router-dom";
 import { ArrowLeft, ArrowRight, User, Trophy, Minus, Plus, Zap, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -96,7 +94,7 @@ const MANAGER_ARCHETYPES: { label: string; icon: string; desc: string; skills: M
 ];
 
 export default function NewGamePage() {
-  const router = useRouter();
+  const navigate = useNavigate();
   const initNewGame = useGameStore((s) => s.initNewGame);
   const [step, setStep] = useState<1 | 2 | 3>(1);
 
@@ -244,7 +242,7 @@ export default function NewGamePage() {
           <Button
             variant="ghost"
             size="icon"
-            onClick={() => (step === 1 ? router.back() : setStep((step - 1) as 1 | 2 | 3))}
+            onClick={() => (step === 1 ? navigate(-1) : setStep((step - 1) as 1 | 2 | 3))}
           >
             <ArrowLeft className="w-5 h-5" />
           </Button>

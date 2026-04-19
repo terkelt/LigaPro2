@@ -1,12 +1,10 @@
-"use client";
-
 import { useMemo, useState, useCallback } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useGameStore } from "@/store/game-store";
 import { CollectibleCard, RARITY_INFO, PackRarity, RewardType } from "@/types/packs";
 import { Filter, Clock, CheckCircle, XCircle, Sparkles, ArrowLeft } from "lucide-react";
-import Link from "next/link";
+import { Link } from "react-router-dom";
 
 type FilterStatus = 'all' | 'unused' | 'used' | 'expired';
 type FilterRarity = 'all' | PackRarity;

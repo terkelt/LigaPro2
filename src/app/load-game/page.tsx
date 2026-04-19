@@ -1,7 +1,5 @@
-"use client";
-
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useNavigate } from "react-router-dom";
 import { ArrowLeft, Trash2, Clock, Trophy, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -17,7 +15,7 @@ import {
 } from "@/components/ui/dialog";
 
 export default function LoadGamePage() {
-  const router = useRouter();
+  const navigate = useNavigate();
   const [saves, setSaves] = useState<SaveGame[]>([]);
   const [loading, setLoading] = useState(true);
   const [deleteId, setDeleteId] = useState<number | null>(null);
@@ -45,7 +43,7 @@ export default function LoadGamePage() {
     if (!save.id) return;
     const success = await loadGameState(save.id);
     if (success) {
-      router.push("/game/dashboard");
+      navigate("/game/dashboard");
     }
   }
 
@@ -83,7 +81,7 @@ export default function LoadGamePage() {
               </p>
               <Button
                 className="mt-6"
-                onClick={() => router.push("/new-game")}
+                onClick={() => navigate("/new-game")}
               >
                 Neues Spiel starten
               </Button>

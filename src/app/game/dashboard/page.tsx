@@ -1,11 +1,8 @@
-"use client";
-
 import { useMemo } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Trophy, TrendingUp, Newspaper, Users, Wallet, Target, ChevronRight, Zap, Star, Handshake, Clock, Heart, Shield, Dumbbell } from "lucide-react";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { Link, useNavigate } from "react-router-dom";
 import { useGameStore } from "@/store/game-store";
 import { TeamLogo } from "@/components/ui/team-logo";
 import {
@@ -21,7 +18,7 @@ import { completeMission, calcManagerEffects } from "@/lib/manager-engine";
 import { Layers, ArrowLeftRight, Calendar, Globe, GraduationCap } from "lucide-react";
 
 export default function DashboardPage() {
-  const router = useRouter();
+  const navigate = useNavigate();
   const gameState = useGameStore((s) => s.gameState);
   const setGameState = useGameStore((s) => s.setGameState);
   const advanceOneDay = useGameStore((s) => s.advanceOneDay);
@@ -30,9 +27,9 @@ export default function DashboardPage() {
 
   useEffect(() => {
     if (preseason && !preseason.isCompleted) {
-      router.replace('/game/preseason');
+      navigate('/game/preseason', { replace: true });
     }
-  }, [preseason, router]);
+  }, [preseason, navigate]);
   const teamPlayers = useMyPlayers();
 
   const squadValue = useMemo(() => teamPlayers.reduce((sum, p) => sum + p.marketValue, 0), [teamPlayers]);
@@ -159,65 +156,68 @@ export default function DashboardPage() {
   const todayActions = agenda.items.filter(i => i.type === 'match' || i.type === 'transfer_offer' || i.type === 'training');
 
   // ═══════════════════════════════════════════════════════════
-  //  PORTAL DASHBOARD — Unified Tile-Based Hub
+  //  BROADCAST DASHBOARD — Premium Sports Hub v3
   // ═══════════════════════════════════════════════════════════
   return (
-    <div className="space-y-5 animate-slide-up">
+    <div className="space-y-4 animate-slide-up max-w-[1400px] mx-auto">
 
-      {/* ═══ Hero Section: Club Info + Manager ═══ */}
-      <div className="flex items-center justify-between gap-4">
-        <div className="flex items-center gap-3">
-          <TeamLogo teamId={team.id} teamName={team.name} shortName={team.shortName} colors={team.colors} size={44} />
-          <div>
-            <h1 className="font-display text-2xl font-bold neon-primary">{agenda.dayName}</h1>
-            <p className="text-xs text-muted-foreground">
-              {team.name} — {new Date(agenda.date).toLocaleDateString("de-DE", { day: "2-digit", month: "long", year: "numeric" })}
-              {season && <span className="ml-1">• Saison {season.year}</span>}
-            </p>
+      {/* ═══ Hero Bar: Club identity + date + manager ═══ */}
+      <div className="flex items-center gap-4 px-1">
+        <TeamLogo teamId={team.id} teamName={team.name} shortName={team.shortName} colors={team.colors} size={40} />
+        <div className="flex-1 min-w-0">
+          <div className="flex items-baseline gap-2">
+            <h1 className="font-display text-xl font-bold tracking-tight">{agenda.dayName}</h1>
+            {season && <span className="text-[10px] font-mono text-muted-foreground tracking-wider">S{season.year}</span>}
           </div>
+          <p className="text-[11px] text-muted-foreground mt-0.5">
+            {team.name} &middot; {new Date(agenda.date).toLocaleDateString("de-DE", { day: "2-digit", month: "long", year: "numeric" })}
+          </p>
         </div>
-        <Link href="/game/manager" className="tile flex items-center gap-2.5 p-2.5 shrink-0">
-          <div className="w-8 h-8 rounded-lg bg-primary/15 flex items-center justify-center text-xs font-bold text-primary">
+        <Link to="/game/manager" className="tile-interactive flex items-center gap-2.5 px-3 py-2 shrink-0">
+          <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-primary/20 to-primary/5 flex items-center justify-center text-[10px] font-bold text-primary">
             {manager.firstName.charAt(0)}{manager.lastName.charAt(0)}
           </div>
           <div className="hidden sm:block">
-            <p className="text-xs font-medium">{manager.firstName} {manager.lastName}</p>
-            <div className="flex items-center gap-1.5">
-              <span className="text-[9px] px-1.5 py-0.5 rounded-full bg-primary/15 text-primary font-medium">Lv. {manager.level}</span>
-              <div className="w-12 h-1 rounded-full bg-secondary overflow-hidden">
-                <div className="h-full rounded-full bg-primary" style={{ width: `${xpPct}%` }} />
+            <p className="text-[11px] font-medium leading-tight">{manager.firstName} {manager.lastName}</p>
+            <div className="flex items-center gap-1.5 mt-0.5">
+              <span className="text-[9px] px-1.5 py-px rounded-md bg-primary/12 text-primary font-semibold">Lv.{manager.level}</span>
+              <div className="w-10 h-1 rounded-full bg-secondary overflow-hidden">
+                <div className="h-full rounded-full bg-primary transition-all" style={{ width: `${xpPct}%` }} />
               </div>
             </div>
           </div>
+          <ChevronRight className="w-3 h-3 text-muted-foreground" />
         </Link>
       </div>
 
-      {/* ═══ Today's Actions (Match Day / Tasks) ═══ */}
+      {/* ═══ Action Alerts (match day / tasks) ═══ */}
       {todayActions.length > 0 && (
-        <div className="space-y-2">
+        <div className="space-y-1.5 stagger-children">
           {todayActions.map(item => (
-            <div key={item.id} className="tile flex items-center gap-3 p-3.5 border-primary/25 bg-gradient-to-r from-primary/5 to-transparent">
-              <span className="text-xl">{item.icon}</span>
+            <div key={item.id} className={`tile flex items-center gap-3 px-4 py-3 ${
+              item.type === 'match' ? 'border-accent/30 bg-gradient-to-r from-accent/6 to-transparent' : 'border-primary/20'
+            }`}>
+              <span className="text-lg">{item.icon}</span>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-bold">{item.title}</p>
-                <p className="text-xs text-muted-foreground truncate">{item.description}</p>
+                <p className="text-[13px] font-semibold">{item.title}</p>
+                <p className="text-[11px] text-muted-foreground truncate">{item.description}</p>
               </div>
               {item.type === 'match' && item.link && (
-                <Button size="sm" className="gap-1.5 shrink-0" onClick={() => {
+                <Button size="sm" className="gap-1 h-7 text-xs rounded-lg shadow-[0_0_12px_hsl(var(--primary)/0.2)]" onClick={() => {
                   const matchId = (item.meta as Record<string, string>)?.matchId;
                   advanceOneDay();
-                  router.push(`/game/match/${matchId}`);
+                  navigate(`/game/match/${matchId}`);
                 }}>
-                  Spielen <ChevronRight className="w-3.5 h-3.5" />
+                  Spielen <ChevronRight className="w-3 h-3" />
                 </Button>
               )}
               {item.type === 'match' && !item.link && (
-                <Button size="sm" variant="outline" className="gap-1.5 shrink-0" onClick={() => advanceOneDay()}>
-                  Simulieren <ChevronRight className="w-3.5 h-3.5" />
+                <Button size="sm" variant="outline" className="gap-1 h-7 text-xs rounded-lg" onClick={() => advanceOneDay()}>
+                  Simulieren <ChevronRight className="w-3 h-3" />
                 </Button>
               )}
               {(item.type === 'transfer_offer' || item.type === 'training') && item.link && (
-                <Button size="sm" variant="outline" className="gap-1 shrink-0" onClick={() => router.push(item.link!)}>
+                <Button size="sm" variant="outline" className="gap-1 h-7 text-xs rounded-lg" onClick={() => navigate(item.link!)}>
                   Ansehen <ChevronRight className="w-3 h-3" />
                 </Button>
               )}
@@ -226,62 +226,73 @@ export default function DashboardPage() {
         </div>
       )}
 
-      {/* ═══ Main Grid: Hero Match + Calendar + Info Tiles ═══ */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+      {/* ═══ Main Grid ═══ */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-3">
 
-        {/* ── Left: Next Match Hero + Form ── */}
-        <div className="space-y-4">
-          {/* Next Match Hero */}
-          <div className={`tile p-5 ${
+        {/* ── LEFT COLUMN (5/12): Match + Form ── */}
+        <div className="lg:col-span-5 space-y-3">
+
+          {/* Next Match Card */}
+          <div className={`tile overflow-hidden ${
             nextMatchCountdown?.days === 0
-              ? 'border-accent/50 bg-gradient-to-br from-accent/10 to-transparent glow-accent'
-              : 'border-primary/30 bg-gradient-to-br from-primary/8 to-transparent'
+              ? 'border-accent/40'
+              : 'border-border/60'
           }`}>
-            <div className="flex items-center justify-between mb-3">
-              <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                <Clock className="w-3.5 h-3.5" />
-                <span className="font-medium">Nächstes Spiel</span>
+            {/* Colored top accent bar */}
+            <div className={`h-0.5 ${nextMatchCountdown?.days === 0 ? 'bg-accent' : 'bg-primary/40'}`} />
+            <div className="p-4">
+              <div className="flex items-center justify-between mb-3">
+                <div className="section-label">
+                  <Clock className="w-3.5 h-3.5" />
+                  <span>Nächstes Spiel</span>
+                </div>
+                {nextMatchCountdown?.days === 0 && (
+                  <span className="text-[9px] px-2 py-0.5 rounded-md bg-accent/15 text-accent font-bold uppercase tracking-wider animate-pulse-soft">Spieltag</span>
+                )}
               </div>
-              {nextMatchCountdown?.days === 0 && (
-                <span className="text-[10px] px-2.5 py-1 rounded-full bg-accent/20 text-accent font-bold animate-pulse">SPIELTAG</span>
+              {nextMatchCountdown ? (
+                <>
+                  <p className={`text-3xl font-display font-black tracking-tight ${
+                    nextMatchCountdown.days === 0 ? 'text-accent' : 'text-foreground'
+                  }`}>
+                    {nextMatchCountdown.days === 0 ? 'HEUTE' : nextMatchCountdown.days === 1 ? 'MORGEN' : `IN ${nextMatchCountdown.days} TAGEN`}
+                  </p>
+                  <p className="text-[12px] text-muted-foreground mt-1.5">
+                    {nextMatchCountdown.isHome ? '🏠 Heim' : '✈️ Auswärts'} vs. <span className="font-semibold text-foreground">{nextMatchCountdown.opponent}</span>
+                  </p>
+                  <div className="flex gap-1.5 mt-3">
+                    <Link to="/game/tactics" className="text-[10px] px-3 py-1.5 rounded-lg bg-primary/10 text-primary hover:bg-primary/20 transition-colors font-medium">
+                      Taktik
+                    </Link>
+                    <Link to="/game/squad" className="text-[10px] px-3 py-1.5 rounded-lg bg-primary/10 text-primary hover:bg-primary/20 transition-colors font-medium">
+                      Aufstellung
+                    </Link>
+                  </div>
+                </>
+              ) : (
+                <p className="text-sm text-muted-foreground py-2">Kein Spiel geplant</p>
               )}
             </div>
-            {nextMatchCountdown ? (
-              <>
-                <p className={`text-4xl font-display font-black ${nextMatchCountdown.days === 0 ? 'text-accent' : 'text-primary'}`}>
-                  {nextMatchCountdown.days === 0 ? 'HEUTE' : nextMatchCountdown.days === 1 ? 'MORGEN' : `${nextMatchCountdown.days} Tage`}
-                </p>
-                <p className="text-sm text-muted-foreground mt-1">
-                  {nextMatchCountdown.isHome ? '🏠 Heim' : '✈️ Auswärts'} vs. <span className="font-bold text-foreground">{nextMatchCountdown.opponent}</span>
-                </p>
-                <div className="flex gap-2 mt-4">
-                  <Link href="/game/tactics" className="text-xs px-3 py-1.5 rounded-lg bg-primary/15 text-primary hover:bg-primary/25 transition-colors font-medium">Taktik</Link>
-                  <Link href="/game/squad" className="text-xs px-3 py-1.5 rounded-lg bg-primary/15 text-primary hover:bg-primary/25 transition-colors font-medium">Aufstellung</Link>
-                </div>
-              </>
-            ) : (
-              <p className="text-sm text-muted-foreground mt-2">Kein Spiel geplant</p>
-            )}
           </div>
 
           {/* Form Curve */}
           <div className="tile p-4">
-            <div className="flex items-center gap-2 text-xs text-muted-foreground mb-3">
+            <div className="section-label mb-3">
               <TrendingUp className="w-3.5 h-3.5" />
-              <span className="font-medium">Formkurve</span>
+              <span>Formkurve</span>
             </div>
             {recentForm.length === 0 ? (
-              <p className="text-xs text-muted-foreground text-center py-4">Noch keine Ergebnisse</p>
+              <p className="text-[11px] text-muted-foreground text-center py-4">Noch keine Ergebnisse</p>
             ) : (
               <div className="flex items-center justify-center gap-2">
                 {recentForm.map((f, i) => (
-                  <div key={i} className="text-center">
-                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-xs font-bold text-white ${
-                      f.result === 'W' ? 'bg-green-500' : f.result === 'L' ? 'bg-red-500' : 'bg-amber-500'
+                  <div key={i} className="text-center group">
+                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-[11px] font-bold text-white transition-transform group-hover:scale-110 ${
+                      f.result === 'W' ? 'bg-emerald-500/90' : f.result === 'L' ? 'bg-red-500/90' : 'bg-amber-500/90'
                     }`}>
                       {f.result === 'W' ? 'S' : f.result === 'L' ? 'N' : 'U'}
                     </div>
-                    <p className="text-[8px] text-muted-foreground mt-1">{f.score}</p>
+                    <p className="text-[8px] text-muted-foreground mt-1 font-mono">{f.score}</p>
                     <p className="text-[7px] text-muted-foreground truncate w-10">{f.opponent}</p>
                   </div>
                 ))}
@@ -291,22 +302,24 @@ export default function DashboardPage() {
 
           {/* Opponent Manager */}
           {opponentManager && agenda.weekMatch && (
-            <div className="tile p-4 border-accent/20">
-              <div className="flex items-center gap-2 text-xs text-muted-foreground mb-3">
-                <Star className="w-3.5 h-3.5 text-accent" />
-                <span className="font-medium text-accent">Gegner-Trainer</span>
-                <span className="ml-auto text-[10px]">
+            <div className="tile p-4">
+              <div className="flex items-center justify-between mb-3">
+                <div className="section-label">
+                  <Star className="w-3.5 h-3.5 text-accent" />
+                  <span className="text-accent">Gegner-Trainer</span>
+                </div>
+                <span className="text-[9px] font-mono text-muted-foreground">
                   {agenda.weekMatch.daysAway === 0 ? 'HEUTE' : `in ${agenda.weekMatch.daysAway}d`}
                 </span>
               </div>
               <div className="flex items-center gap-3 mb-3">
-                <div className="w-10 h-10 rounded-xl bg-accent/10 flex items-center justify-center text-sm font-bold text-accent">
+                <div className="w-9 h-9 rounded-lg bg-accent/10 flex items-center justify-center text-sm font-bold text-accent">
                   {opponentManager.firstName.charAt(0)}{opponentManager.lastName.charAt(0)}
                 </div>
                 <div>
-                  <p className="text-sm font-bold">{opponentManager.firstName} {opponentManager.lastName}</p>
+                  <p className="text-[13px] font-semibold">{opponentManager.firstName} {opponentManager.lastName}</p>
                   <p className="text-[10px] text-muted-foreground">
-                    {agenda.weekMatch.opponentName} • Lv. {opponentManager.level}
+                    {agenda.weekMatch.opponentName} &middot; Lv. {opponentManager.level}
                   </p>
                 </div>
               </div>
@@ -321,85 +334,113 @@ export default function DashboardPage() {
               </div>
             </div>
           )}
+
+          {/* Sponsors */}
+          {activeSponsors.length > 0 && (
+            <div className="tile p-4">
+              <div className="flex items-center justify-between mb-2.5">
+                <div className="section-label">
+                  <Handshake className="w-3.5 h-3.5" />
+                  <span>Sponsoren</span>
+                </div>
+                <Link to="/game/finances" className="text-[10px] text-primary hover:text-primary/80 transition-colors">Details →</Link>
+              </div>
+              {mainSponsor && (
+                <div className="flex items-center justify-between gap-2 text-[11px]">
+                  <span className="truncate text-muted-foreground">{mainSponsor.name}</span>
+                  <span className="font-mono text-primary font-bold whitespace-nowrap">{formatValue(mainSponsor.amountPerSeason)}</span>
+                </div>
+              )}
+              <div className="mt-2 pt-2 border-t border-border/30 flex items-center justify-between text-[10px] text-muted-foreground">
+                <span>{activeSponsors.length} Verträge</span>
+                <span className="font-semibold text-primary">{formatValue(totalSponsorIncome)}/S</span>
+              </div>
+            </div>
+          )}
         </div>
 
-        {/* ── Center: Stats Grid + Table ── */}
-        <div className="space-y-4">
-          {/* KPI Stats */}
-          <div className="grid grid-cols-2 gap-3">
-            <Link href="/game/table" className="tile p-4 group">
-              <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground mb-1">
-                <Trophy className="w-3 h-3" />
-                <span>Tabelle</span>
+        {/* ── CENTER COLUMN (4/12): KPIs + Mood + Table ── */}
+        <div className="lg:col-span-4 space-y-3">
+
+          {/* KPI Grid — 2x2 stat cards */}
+          <div className="grid grid-cols-2 gap-2">
+            <Link to="/game/table" className="tile-stat p-3.5 group">
+              <div className="flex items-center gap-1.5 mb-1.5">
+                <Trophy className="w-3 h-3 text-muted-foreground group-hover:text-primary transition-colors" />
+                <span className="text-[9px] font-medium uppercase tracking-wider text-muted-foreground">Tabelle</span>
               </div>
-              <p className="text-3xl font-display font-black">{myTableEntry?.position ?? "—"}<span className="text-sm font-normal text-muted-foreground">.</span></p>
-              <p className="text-[10px] text-muted-foreground">{myTableEntry?.points ?? 0} Pkt • {myTableEntry?.played ?? 0} Sp</p>
+              <p className="text-2xl font-display font-black leading-none">{myTableEntry?.position ?? "—"}<span className="text-xs font-normal text-muted-foreground">.</span></p>
+              <p className="text-[9px] text-muted-foreground mt-1 font-mono">{myTableEntry?.points ?? 0} Pkt &middot; {myTableEntry?.played ?? 0} Sp</p>
             </Link>
 
-            <Link href="/game/squad" className="tile p-4 group">
-              <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground mb-1">
-                <Users className="w-3 h-3" />
-                <span>Kader</span>
+            <Link to="/game/squad" className="tile-stat p-3.5 group">
+              <div className="flex items-center gap-1.5 mb-1.5">
+                <Users className="w-3 h-3 text-muted-foreground group-hover:text-primary transition-colors" />
+                <span className="text-[9px] font-medium uppercase tracking-wider text-muted-foreground">Kader</span>
               </div>
-              <p className="text-3xl font-display font-black">{avgOverall}<span className="text-sm font-normal text-muted-foreground"> Ø</span></p>
-              <p className="text-[10px] text-muted-foreground">{teamPlayers.length} Spieler</p>
-              {injuredCount > 0 && <p className="text-[9px] text-red-400 mt-1">🏥 {injuredCount} verletzt</p>}
+              <p className="text-2xl font-display font-black leading-none">{avgOverall}<span className="text-xs font-normal text-muted-foreground"> Ø</span></p>
+              <p className="text-[9px] text-muted-foreground mt-1 font-mono">{teamPlayers.length} Spieler</p>
+              {injuredCount > 0 && <p className="text-[8px] text-red-400 mt-0.5">🏥 {injuredCount} verletzt</p>}
             </Link>
 
-            <Link href="/game/finances" className="tile p-4 group">
-              <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground mb-1">
-                <Wallet className="w-3 h-3" />
-                <span>Budget</span>
+            <Link to="/game/finances" className="tile-stat p-3.5 group">
+              <div className="flex items-center gap-1.5 mb-1.5">
+                <Wallet className="w-3 h-3 text-muted-foreground group-hover:text-primary transition-colors" />
+                <span className="text-[9px] font-medium uppercase tracking-wider text-muted-foreground">Budget</span>
               </div>
-              <p className="text-2xl font-display font-black text-primary">{formatValue(finances?.transferBudget ?? 0)}</p>
-              <p className="text-[10px] text-muted-foreground">Kaderwert: {formatValue(squadValue)}</p>
+              <p className="text-xl font-display font-black text-primary leading-none">{formatValue(finances?.transferBudget ?? 0)}</p>
+              <p className="text-[9px] text-muted-foreground mt-1 font-mono">Wert: {formatValue(squadValue)}</p>
             </Link>
 
-            <Link href="/game/cards" className="tile p-4 group">
-              <div className="flex items-center gap-1.5 text-[10px] text-muted-foreground mb-1">
-                <Layers className="w-3 h-3" />
-                <span>Karten</span>
+            <Link to="/game/cards" className="tile-stat p-3.5 group">
+              <div className="flex items-center gap-1.5 mb-1.5">
+                <Layers className="w-3 h-3 text-muted-foreground group-hover:text-accent transition-colors" />
+                <span className="text-[9px] font-medium uppercase tracking-wider text-muted-foreground">Karten</span>
               </div>
-              <p className={`text-3xl font-display font-black ${unusedCards > 0 ? 'text-accent' : ''}`}>{unusedCards}</p>
-              <p className="text-[10px] text-muted-foreground">verfügbar</p>
+              <p className={`text-2xl font-display font-black leading-none ${unusedCards > 0 ? 'text-accent' : ''}`}>{unusedCards}</p>
+              <p className="text-[9px] text-muted-foreground mt-1">verfügbar</p>
             </Link>
           </div>
 
           {/* Mood Barometer */}
           <div className="tile p-4">
-            <div className="flex items-center gap-2 text-xs text-muted-foreground mb-3">
+            <div className="section-label mb-3">
               <Heart className="w-3.5 h-3.5" />
-              <span className="font-medium">Stimmung</span>
+              <span>Teamstimmung</span>
             </div>
-            <div className="space-y-2.5">
+            <div className="space-y-3">
               {[
-                { label: 'Moral', value: avgMorale, color: avgMorale >= 70 ? 'bg-green-500' : avgMorale >= 45 ? 'bg-amber-500' : 'bg-red-500' },
-                { label: 'Fitness', value: avgCondition, color: avgCondition >= 70 ? 'bg-green-500' : avgCondition >= 45 ? 'bg-amber-500' : 'bg-red-500' },
-                { label: 'Reputation', value: teamReputation, color: teamReputation >= 70 ? 'bg-green-500' : teamReputation >= 45 ? 'bg-amber-500' : 'bg-red-500' },
-              ].map(m => (
-                <div key={m.label} className="flex items-center gap-2">
-                  <span className="text-[10px] text-muted-foreground w-16">{m.label}</span>
-                  <div className="flex-1 h-2 rounded-full bg-secondary overflow-hidden">
-                    <div className={`h-full rounded-full ${m.color} transition-all`} style={{ width: `${m.value}%` }} />
+                { label: 'Moral', value: avgMorale, icon: '💪' },
+                { label: 'Fitness', value: avgCondition, icon: '🏃' },
+                { label: 'Reputation', value: teamReputation, icon: '⭐' },
+              ].map(m => {
+                const color = m.value >= 70 ? 'bg-emerald-500' : m.value >= 45 ? 'bg-amber-500' : 'bg-red-500';
+                return (
+                  <div key={m.label} className="flex items-center gap-2.5">
+                    <span className="text-xs">{m.icon}</span>
+                    <span className="text-[10px] text-muted-foreground w-14">{m.label}</span>
+                    <div className="flex-1 progress-bar">
+                      <div className={color} style={{ width: `${m.value}%` }} />
+                    </div>
+                    <span className="text-[10px] font-mono font-bold w-6 text-right">{m.value}</span>
                   </div>
-                  <span className="text-[10px] font-mono font-bold w-6 text-right">{m.value}</span>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
 
           {/* League Table Mini */}
           <div className="tile overflow-hidden">
             <div className="flex items-center justify-between px-4 pt-3 pb-2">
-              <div className="flex items-center gap-2 text-xs text-muted-foreground">
+              <div className="section-label">
                 <Trophy className="w-3.5 h-3.5" />
-                <span className="font-medium">{league?.name ?? "Tabelle"}</span>
+                <span>{league?.name ?? "Tabelle"}</span>
               </div>
-              <Link href="/game/table" className="text-[10px] text-primary hover:underline">Alle →</Link>
+              <Link to="/game/table" className="text-[10px] text-primary hover:text-primary/80 transition-colors">Alle →</Link>
             </div>
-            <table className="w-full text-xs">
+            <table className="w-full text-[11px]">
               <thead>
-                <tr className="border-b border-border/50 text-[9px] text-muted-foreground uppercase tracking-wider">
+                <tr className="border-b border-border/40 text-[8px] text-muted-foreground/60 uppercase tracking-widest">
                   <th className="text-center px-2 py-1.5 w-6">#</th>
                   <th className="text-left px-2 py-1.5">Verein</th>
                   <th className="text-center px-2 py-1.5 w-8">Sp</th>
@@ -411,14 +452,16 @@ export default function DashboardPage() {
                   const t = teams.find((tm) => tm.id === entry.teamId);
                   const isMe = entry.teamId === currentTeamId;
                   return (
-                    <tr key={entry.teamId} className={`border-b border-border/20 ${isMe ? "bg-primary/8 font-semibold" : ""}`}>
-                      <td className="text-center px-2 py-1.5 text-muted-foreground">{entry.position}</td>
-                      <td className="px-2 py-1.5 flex items-center gap-1.5">
-                        <TeamLogo teamId={entry.teamId} teamName={t?.name ?? '?'} shortName={t?.shortName} colors={t?.colors} size={16} />
-                        <span className={isMe ? "text-primary" : ""}>{t?.shortName ?? "?"}</span>
+                    <tr key={entry.teamId} className={`border-b border-border/15 transition-colors hover:bg-secondary/30 ${isMe ? "bg-primary/6" : ""}`}>
+                      <td className={`text-center px-2 py-1.5 font-mono ${isMe ? "text-primary font-bold" : "text-muted-foreground"}`}>{entry.position}</td>
+                      <td className="px-2 py-1.5">
+                        <div className="flex items-center gap-1.5">
+                          <TeamLogo teamId={entry.teamId} teamName={t?.name ?? '?'} shortName={t?.shortName} colors={t?.colors} size={14} />
+                          <span className={isMe ? "text-primary font-semibold" : ""}>{t?.shortName ?? "?"}</span>
+                        </div>
                       </td>
-                      <td className="text-center px-2 py-1.5 text-muted-foreground">{entry.played}</td>
-                      <td className="text-center px-2 py-1.5 font-bold">{entry.points}</td>
+                      <td className="text-center px-2 py-1.5 text-muted-foreground font-mono">{entry.played}</td>
+                      <td className={`text-center px-2 py-1.5 font-mono ${isMe ? "text-primary font-bold" : "font-semibold"}`}>{entry.points}</td>
                     </tr>
                   );
                 })}
@@ -427,61 +470,68 @@ export default function DashboardPage() {
           </div>
         </div>
 
-        {/* ── Right: Calendar + Missions + News ── */}
-        <div className="space-y-4">
+        {/* ── RIGHT COLUMN (3/12): Calendar + Missions + News ── */}
+        <div className="lg:col-span-3 space-y-3">
+
           {/* Week Calendar */}
-          <div className="tile p-4">
-            <div className="flex items-center gap-2 text-xs text-muted-foreground mb-3">
+          <div className="tile p-3.5">
+            <div className="section-label mb-2.5">
               <Calendar className="w-3.5 h-3.5" />
-              <span className="font-medium">Woche</span>
+              <span>Woche</span>
             </div>
             <div className="grid grid-cols-7 gap-1">
               {weekDays.map((day) => (
                 <div
                   key={day.date}
-                  className={`rounded-lg p-1.5 text-center transition-all ${
-                    day.isToday ? "bg-primary/20 border border-primary ring-1 ring-primary/30" : day.isPast ? "bg-muted/20 text-muted-foreground" : "border border-border/40"
+                  className={`rounded-lg p-1 text-center transition-all ${
+                    day.isToday
+                      ? "bg-primary/15 border border-primary/40 ring-1 ring-primary/20"
+                      : day.isPast
+                        ? "opacity-40"
+                        : "border border-border/30"
                   }`}
                 >
-                  <p className={`text-[8px] font-bold uppercase ${day.isToday ? "text-primary" : ""}`}>{day.dayShort}</p>
-                  <p className={`text-sm font-display ${day.isToday ? "text-primary font-bold" : ""}`}>{day.dayNum}</p>
+                  <p className={`text-[7px] font-bold uppercase ${day.isToday ? "text-primary" : "text-muted-foreground"}`}>{day.dayShort}</p>
+                  <p className={`text-[13px] font-display leading-tight ${day.isToday ? "text-primary font-bold" : ""}`}>{day.dayNum}</p>
                   {day.hasMatch && <span className="inline-block w-1.5 h-1.5 rounded-full bg-accent mt-0.5" />}
-                  {day.hasTraining && !day.hasMatch && <span className="inline-block w-1.5 h-1.5 rounded-full bg-blue-500 mt-0.5" />}
+                  {day.hasTraining && !day.hasMatch && <span className="inline-block w-1.5 h-1.5 rounded-full bg-blue-500/60 mt-0.5" />}
                 </div>
               ))}
             </div>
           </div>
 
-          {/* Weekly Missions */}
-          <div className="tile p-4 border-primary/20">
-            <div className="flex items-center justify-between mb-3">
-              <div className="flex items-center gap-2 text-xs">
+          {/* Missions */}
+          <div className="tile p-3.5">
+            <div className="flex items-center justify-between mb-2.5">
+              <div className="section-label">
                 <Target className="w-3.5 h-3.5 text-primary" />
-                <span className="text-primary font-medium">Missionen</span>
+                <span className="text-primary">Missionen</span>
               </div>
-              <Link href="/game/manager" className="text-[10px] text-primary hover:underline">Alle →</Link>
+              <Link to="/game/manager" className="text-[10px] text-primary hover:text-primary/80 transition-colors">Alle →</Link>
             </div>
             {(manager.activeMissions ?? []).length === 0 ? (
-              <p className="text-xs text-muted-foreground text-center py-2">Keine aktiven Missionen.</p>
+              <p className="text-[10px] text-muted-foreground text-center py-3">Keine aktiven Missionen.</p>
             ) : (
               <div className="space-y-2">
                 {(manager.activeMissions ?? []).slice(0, 3).map(mission => {
                   const progressPct = mission.target > 0 ? Math.min(100, Math.round((mission.progress / mission.target) * 100)) : 0;
                   const canClaim = mission.progress >= mission.target && !mission.isCompleted;
                   return (
-                    <div key={mission.id} className={`p-2.5 rounded-lg border ${mission.isCompleted ? 'border-green-500/30 bg-green-500/5' : 'border-border/50'}`}>
+                    <div key={mission.id} className={`p-2.5 rounded-lg border ${
+                      mission.isCompleted ? 'border-emerald-500/25 bg-emerald-500/5' : canClaim ? 'border-primary/30 bg-primary/5' : 'border-border/40'
+                    }`}>
                       <div className="flex items-start gap-2">
                         <span className="text-sm mt-0.5">{mission.icon}</span>
                         <div className="flex-1 min-w-0">
-                          <p className={`text-[11px] font-bold ${mission.isCompleted ? 'text-green-400 line-through' : ''}`}>{mission.title}</p>
+                          <p className={`text-[10px] font-semibold ${mission.isCompleted ? 'text-emerald-400 line-through' : ''}`}>{mission.title}</p>
                           <div className="mt-1 flex items-center gap-2">
-                            <div className="flex-1 h-1.5 rounded-full bg-secondary overflow-hidden">
-                              <div className={`h-full rounded-full transition-all ${mission.isCompleted ? 'bg-green-500' : canClaim ? 'bg-primary animate-pulse' : 'bg-primary/60'}`} style={{ width: `${progressPct}%` }} />
+                            <div className="flex-1 progress-bar">
+                              <div className={mission.isCompleted ? 'bg-emerald-500' : canClaim ? 'bg-primary animate-pulse-soft' : 'bg-primary/50'} style={{ width: `${progressPct}%` }} />
                             </div>
-                            <span className="text-[9px] font-mono text-muted-foreground">{mission.progress}/{mission.target}</span>
+                            <span className="text-[8px] font-mono text-muted-foreground">{mission.progress}/{mission.target}</span>
                           </div>
                           {canClaim && (
-                            <Button size="sm" className="mt-1.5 h-5 text-[9px] w-full" onClick={() => handleClaimMission(mission.id)}>
+                            <Button size="sm" className="mt-1.5 h-5 text-[9px] w-full rounded-md" onClick={() => handleClaimMission(mission.id)}>
                               Einsammeln
                             </Button>
                           )}
@@ -496,54 +546,33 @@ export default function DashboardPage() {
 
           {/* News Feed */}
           <div className="tile overflow-hidden">
-            <div className="flex items-center justify-between px-4 pt-3 pb-2">
-              <div className="flex items-center gap-2 text-xs text-muted-foreground">
+            <div className="flex items-center justify-between px-3.5 pt-3 pb-2">
+              <div className="section-label">
                 <Newspaper className="w-3.5 h-3.5" />
-                <span className="font-medium">Neuigkeiten</span>
+                <span>Neuigkeiten</span>
                 {unreadNews > 0 && (
-                  <span className="text-[8px] px-1.5 py-0.5 rounded-full bg-primary/20 text-primary font-bold">{unreadNews} neu</span>
+                  <span className="metric-badge bg-primary/15 text-primary">{unreadNews} neu</span>
                 )}
               </div>
-              <Link href="/game/news" className="text-[10px] text-primary hover:underline">Alle →</Link>
+              <Link to="/game/news" className="text-[10px] text-primary hover:text-primary/80 transition-colors">Alle →</Link>
             </div>
-            <div className="px-4 pb-3 space-y-1">
+            <div className="px-3.5 pb-3 space-y-0.5">
               {news.length === 0 ? (
                 <p className="text-[10px] text-muted-foreground text-center py-3">Keine Neuigkeiten</p>
               ) : (
                 news.slice(0, 5).map(item => (
-                  <div key={item.id} className={`flex items-center gap-2 py-1.5 border-l-2 pl-2.5 ${!item.isRead ? 'border-l-primary' : 'border-l-border/40'}`}>
+                  <div key={item.id} className={`flex items-center gap-2 py-1.5 border-l-2 pl-2.5 rounded-r-md transition-colors hover:bg-secondary/20 ${
+                    !item.isRead ? 'border-l-primary' : 'border-l-border/30'
+                  }`}>
                     <div className="flex-1 min-w-0">
-                      <p className={`text-[11px] truncate ${!item.isRead ? 'font-bold' : ''}`}>{item.title}</p>
-                      <p className="text-[9px] text-muted-foreground">{item.date}</p>
+                      <p className={`text-[11px] truncate ${!item.isRead ? 'font-semibold' : 'text-muted-foreground'}`}>{item.title}</p>
+                      <p className="text-[8px] text-muted-foreground font-mono">{item.date}</p>
                     </div>
                   </div>
                 ))
               )}
             </div>
           </div>
-
-          {/* Sponsors */}
-          {activeSponsors.length > 0 && (
-            <div className="tile p-4 border-primary/15">
-              <div className="flex items-center justify-between mb-2">
-                <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                  <Handshake className="w-3.5 h-3.5" />
-                  <span className="font-medium">Sponsoren</span>
-                </div>
-                <Link href="/game/finances" className="text-[10px] text-primary hover:underline">Details →</Link>
-              </div>
-              {mainSponsor && (
-                <div className="flex items-center justify-between gap-2 text-[11px]">
-                  <span className="truncate">{mainSponsor.name}</span>
-                  <span className="font-mono text-primary font-bold whitespace-nowrap">{formatValue(mainSponsor.amountPerSeason)}</span>
-                </div>
-              )}
-              <div className="mt-1.5 pt-1.5 border-t border-border/40 flex items-center justify-between text-[10px] text-muted-foreground">
-                <span>{activeSponsors.length} Verträge</span>
-                <span className="font-bold text-primary">{formatValue(totalSponsorIncome)}/S</span>
-              </div>
-            </div>
-          )}
         </div>
       </div>
     </div>

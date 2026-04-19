@@ -1,6 +1,4 @@
-"use client";
-
-import Link from "next/link";
+import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Trophy, FolderOpen, Settings, Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -71,86 +69,85 @@ export default function Home() {
   return (
     <div className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden stadium-bg">
 
+      {/* Ambient glow */}
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] rounded-full bg-primary/4 blur-[120px] pointer-events-none" />
+
       {/* Stadium silhouette */}
       <StadiumSilhouette />
 
       {/* Main content */}
-      <div className="relative z-10 flex flex-col items-center gap-12 px-4">
+      <div className="relative z-10 flex flex-col items-center gap-10 px-4">
         {/* Logo */}
         <motion.div
-          initial={{ opacity: 0, y: -30 }}
+          initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
+          transition={{ duration: 0.7, ease: "easeOut" }}
           className="text-center"
         >
-          <h1 className="font-display text-7xl md:text-9xl font-black tracking-tight">
-            <span className="text-primary neon-primary">LIGA</span>{" "}
-            <span className="text-accent neon-accent">PRO</span>
+          <h1 className="font-display text-7xl md:text-9xl font-black tracking-tight leading-none">
+            <span className="text-primary drop-shadow-[0_0_30px_hsl(var(--primary)/0.3)]">LIGA</span>
+            <span className="text-accent drop-shadow-[0_0_30px_hsl(var(--accent)/0.3)] ml-3 md:ml-5">PRO</span>
           </h1>
-          <p className="text-muted-foreground text-lg md:text-xl mt-3 tracking-[0.3em] uppercase font-light">
+          <p className="text-muted-foreground/70 text-sm md:text-base mt-3 tracking-[0.4em] uppercase font-light">
             Fußballmanager
           </p>
-          <div className="mt-5 h-[2px] w-56 mx-auto bg-gradient-to-r from-transparent via-primary/60 to-transparent animate-shimmer" />
+          <div className="mt-4 h-px w-40 mx-auto bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
         </motion.div>
 
         {/* Menu buttons */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
-          className="flex flex-col gap-4 w-full max-w-md"
+          transition={{ duration: 0.7, delay: 0.25, ease: "easeOut" }}
+          className="flex flex-col gap-2.5 w-full max-w-sm"
         >
           {menuItems.map((item, index) => (
             <motion.div
               key={item.href}
-              initial={{ opacity: 0, x: -20 }}
+              initial={{ opacity: 0, x: -16 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5, delay: 0.5 + index * 0.1 }}
+              transition={{ duration: 0.4, delay: 0.4 + index * 0.08 }}
             >
-              <Link href={item.href}>
-                <Button
-                  variant="outline"
-                  className="w-full h-16 text-lg justify-start gap-4 px-6 border-border/40 bg-card/40 backdrop-blur-md hover:bg-primary/10 hover:border-primary/40 hover:text-primary hover:shadow-[0_0_20px_hsl(var(--primary)/0.15)] transition-all duration-300 group"
-                >
-                  <item.icon className="w-6 h-6 text-muted-foreground group-hover:text-primary group-hover:drop-shadow-[0_0_6px_hsl(var(--primary)/0.5)] transition-all" />
-                  <div className="flex flex-col items-start">
-                    <span className="font-semibold">{item.label}</span>
-                    <span className="text-xs text-muted-foreground font-normal">
-                      {item.description}
-                    </span>
+              <Link to={item.href}>
+                <div className="group relative flex items-center gap-4 px-5 py-3.5 rounded-xl border border-border/30 bg-card/30 backdrop-blur-md hover:bg-primary/8 hover:border-primary/30 transition-all duration-300 cursor-pointer">
+                  <div className="w-10 h-10 rounded-lg bg-primary/8 group-hover:bg-primary/15 flex items-center justify-center transition-colors shrink-0">
+                    <item.icon className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
                   </div>
-                </Button>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-semibold group-hover:text-primary transition-colors">{item.label}</p>
+                    <p className="text-[11px] text-muted-foreground/70 mt-0.5">{item.description}</p>
+                  </div>
+                  <div className="w-1 h-6 rounded-full bg-primary/0 group-hover:bg-primary/40 transition-all" />
+                </div>
               </Link>
             </motion.div>
           ))}
 
           {/* Credits */}
           <motion.div
-            initial={{ opacity: 0, x: -20 }}
+            initial={{ opacity: 0, x: -16 }}
             animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.8 }}
+            transition={{ duration: 0.4, delay: 0.64 }}
           >
             <Dialog>
               <DialogTrigger asChild>
-                <Button
-                  variant="outline"
-                  className="w-full h-16 text-lg justify-start gap-4 px-6 border-border/40 bg-card/40 backdrop-blur-md hover:bg-primary/10 hover:border-primary/40 hover:text-primary hover:shadow-[0_0_20px_hsl(var(--primary)/0.15)] transition-all duration-300 group"
-                >
-                  <Info className="w-6 h-6 text-muted-foreground group-hover:text-primary group-hover:drop-shadow-[0_0_6px_hsl(var(--primary)/0.5)] transition-all" />
-                  <div className="flex flex-col items-start">
-                    <span className="font-semibold">Credits</span>
-                    <span className="text-xs text-muted-foreground font-normal">
-                      Über dieses Spiel
-                    </span>
+                <div className="group relative flex items-center gap-4 px-5 py-3.5 rounded-xl border border-border/30 bg-card/30 backdrop-blur-md hover:bg-primary/8 hover:border-primary/30 transition-all duration-300 cursor-pointer">
+                  <div className="w-10 h-10 rounded-lg bg-primary/8 group-hover:bg-primary/15 flex items-center justify-center transition-colors shrink-0">
+                    <Info className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
                   </div>
-                </Button>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-semibold group-hover:text-primary transition-colors">Credits</p>
+                    <p className="text-[11px] text-muted-foreground/70 mt-0.5">Über dieses Spiel</p>
+                  </div>
+                  <div className="w-1 h-6 rounded-full bg-primary/0 group-hover:bg-primary/40 transition-all" />
+                </div>
               </DialogTrigger>
-              <DialogContent className="bg-card border-border">
+              <DialogContent className="bg-card/95 backdrop-blur-xl border-border/50 rounded-2xl">
                 <DialogHeader>
-                  <DialogTitle className="font-display text-2xl">
+                  <DialogTitle className="font-display text-2xl tracking-tight">
                     <span className="text-primary">LIGA</span>{" "}
                     <span className="text-accent">PRO</span>{" "}
-                    <span className="text-foreground">Fußballmanager</span>
+                    <span className="text-foreground/80">Fußballmanager</span>
                   </DialogTitle>
                 </DialogHeader>
                 <div className="space-y-4 text-sm text-muted-foreground">
@@ -159,18 +156,18 @@ export default function Home() {
                     ersten drei deutschen Ligen.
                   </p>
                   <div>
-                    <p className="font-semibold text-foreground mb-1">Features:</p>
-                    <ul className="list-disc list-inside space-y-1">
-                      <li>56 reale Vereine mit vollständigen Kadern</li>
-                      <li>Match-Engine mit 2D-Visualisierung</li>
-                      <li>Transfermarkt mit KI-Verhandlungen</li>
-                      <li>Taktik-System mit Drag & Drop</li>
-                      <li>Nationale Pokale & Internationale Wettbewerbe</li>
-                      <li>Jugendakademie & Spielerentwicklung</li>
+                    <p className="font-semibold text-foreground mb-1.5 text-xs uppercase tracking-wider">Features</p>
+                    <ul className="space-y-1.5 text-[13px]">
+                      <li className="flex items-center gap-2"><span className="w-1 h-1 rounded-full bg-primary shrink-0" /> 56 reale Vereine mit vollständigen Kadern</li>
+                      <li className="flex items-center gap-2"><span className="w-1 h-1 rounded-full bg-primary shrink-0" /> Match-Engine mit 2D-Visualisierung</li>
+                      <li className="flex items-center gap-2"><span className="w-1 h-1 rounded-full bg-primary shrink-0" /> Transfermarkt mit KI-Verhandlungen</li>
+                      <li className="flex items-center gap-2"><span className="w-1 h-1 rounded-full bg-primary shrink-0" /> Taktik-System mit Drag & Drop</li>
+                      <li className="flex items-center gap-2"><span className="w-1 h-1 rounded-full bg-primary shrink-0" /> Nationale Pokale & Internationale Wettbewerbe</li>
+                      <li className="flex items-center gap-2"><span className="w-1 h-1 rounded-full bg-primary shrink-0" /> Jugendakademie & Spielerentwicklung</li>
                     </ul>
                   </div>
-                  <p className="text-xs pt-2 border-t border-border">
-                    Version {APP_VERSION} | Erstellt mit Next.js, React & TypeScript
+                  <p className="text-[11px] pt-3 border-t border-border/40 font-mono text-muted-foreground/60">
+                    v{APP_VERSION} &middot; React &middot; TypeScript &middot; Tauri
                   </p>
                 </div>
               </DialogContent>
@@ -183,8 +180,8 @@ export default function Home() {
       <motion.p
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 1.2 }}
-        className="absolute bottom-4 right-6 text-xs text-muted-foreground/50"
+        transition={{ delay: 1.0 }}
+        className="absolute bottom-3 right-5 text-[10px] font-mono text-muted-foreground/30"
       >
         v{APP_VERSION}
       </motion.p>

@@ -115,49 +115,82 @@ class SoundManager {
 
     switch (sound) {
       case 'whistle':
-        // Short referee whistle
-        this.playTone(2800, 0.3, 0.3, 'sine');
-        setTimeout(() => this.playTone(3200, 0.15, 0.25, 'sine'), 100);
+        // Realistic referee whistle: two overlapping tones with vibrato
+        this.playTone(2800, 0.25, 0.25, 'sine');
+        this.playTone(3100, 0.25, 0.12, 'sine');
+        setTimeout(() => {
+          this.playTone(3200, 0.18, 0.2, 'sine');
+          this.playTone(3400, 0.15, 0.08, 'sine');
+        }, 100);
         break;
 
       case 'goal_cheer':
-        // Crowd roar + horn
-        this.playNoiseBurst(1.5, 0.4);
-        this.playTone(440, 0.8, 0.2, 'sawtooth');
-        setTimeout(() => this.playTone(554, 0.6, 0.15, 'sawtooth'), 200);
-        setTimeout(() => this.playTone(659, 0.4, 0.1, 'sawtooth'), 400);
+        // Multi-layered crowd roar + stadium horn + crowd surge
+        this.playNoiseBurst(2.0, 0.5);
+        // Stadium horn fanfare (ascending)
+        this.playTone(349, 0.9, 0.18, 'sawtooth'); // F4
+        setTimeout(() => this.playTone(440, 0.7, 0.15, 'sawtooth'), 150); // A4
+        setTimeout(() => this.playTone(523, 0.6, 0.12, 'sawtooth'), 300); // C5
+        setTimeout(() => this.playTone(659, 0.5, 0.10, 'sawtooth'), 450); // E5
+        // Second burst of crowd noise
+        setTimeout(() => this.playNoiseBurst(1.5, 0.35), 400);
+        // Distant drum beats
+        setTimeout(() => this.playTone(80, 0.08, 0.2, 'sine'), 600);
+        setTimeout(() => this.playTone(80, 0.08, 0.18, 'sine'), 750);
+        setTimeout(() => this.playTone(80, 0.08, 0.15, 'sine'), 900);
         break;
 
       case 'crowd_boo':
-        // Low crowd groan
-        this.playNoiseBurst(0.8, 0.2);
-        this.playTone(150, 0.6, 0.15, 'sawtooth');
+        // Deeper crowd groan with multiple frequencies
+        this.playNoiseBurst(1.0, 0.25);
+        this.playTone(130, 0.7, 0.15, 'sawtooth');
+        this.playTone(180, 0.6, 0.10, 'sawtooth');
+        setTimeout(() => this.playTone(110, 0.5, 0.12, 'sawtooth'), 200);
         break;
 
       case 'card':
-        // Sharp whistle
-        this.playTone(3500, 0.5, 0.35, 'sine');
+        // Sharp authoritative whistle + brief crowd reaction
+        this.playTone(3500, 0.4, 0.3, 'sine');
+        this.playTone(3700, 0.3, 0.1, 'sine');
+        setTimeout(() => this.playNoiseBurst(0.4, 0.12), 200);
         break;
 
       case 'substitution':
-        // Electronic beep beep
-        this.playTone(1000, 0.1, 0.2, 'square');
-        setTimeout(() => this.playTone(1200, 0.1, 0.2, 'square'), 150);
-        setTimeout(() => this.playTone(1400, 0.15, 0.2, 'square'), 300);
+        // Electronic beep sequence (4th official board)
+        this.playTone(880, 0.08, 0.18, 'square');
+        setTimeout(() => this.playTone(1100, 0.08, 0.18, 'square'), 120);
+        setTimeout(() => this.playTone(1320, 0.08, 0.18, 'square'), 240);
+        setTimeout(() => this.playTone(1100, 0.12, 0.15, 'square'), 400);
         break;
 
       case 'halftime':
-        // Triple whistle
-        this.playTone(2800, 0.2, 0.3, 'sine');
-        setTimeout(() => this.playTone(2800, 0.2, 0.3, 'sine'), 300);
-        setTimeout(() => this.playTone(2800, 0.4, 0.3, 'sine'), 600);
+        // Triple whistle with realistic spacing
+        this.playTone(2800, 0.22, 0.28, 'sine');
+        this.playTone(3000, 0.18, 0.10, 'sine');
+        setTimeout(() => {
+          this.playTone(2800, 0.22, 0.28, 'sine');
+          this.playTone(3000, 0.18, 0.10, 'sine');
+        }, 350);
+        setTimeout(() => {
+          this.playTone(2800, 0.4, 0.3, 'sine');
+          this.playTone(3000, 0.35, 0.12, 'sine');
+        }, 700);
         break;
 
       case 'fulltime':
-        // Long triple whistle
+        // Long triple whistle (definitive)
         this.playTone(2800, 0.3, 0.3, 'sine');
-        setTimeout(() => this.playTone(2800, 0.3, 0.3, 'sine'), 400);
-        setTimeout(() => this.playTone(2800, 0.6, 0.35, 'sine'), 800);
+        this.playTone(3000, 0.25, 0.12, 'sine');
+        setTimeout(() => {
+          this.playTone(2800, 0.3, 0.3, 'sine');
+          this.playTone(3000, 0.25, 0.12, 'sine');
+        }, 450);
+        setTimeout(() => {
+          this.playTone(2800, 0.7, 0.35, 'sine');
+          this.playTone(3000, 0.6, 0.15, 'sine');
+          // Crowd reacts to final whistle
+          setTimeout(() => this.playNoiseBurst(1.2, 0.2), 400);
+        }, 900);
         break;
 
       case 'click':
