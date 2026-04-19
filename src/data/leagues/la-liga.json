@@ -1,0 +1,17 @@
+{
+  "id": "la-liga",
+  "name": "La Liga",
+  "shortName": "LL",
+  "country": "Spanien",
+  "tier": 1,
+  "numberOfTeams": 20,
+  "matchdays": 38,
+  "promotion": { "automatic": 0, "playoff": 0 },
+  "relegation": { "automatic": 3, "playoff": 0 },
+  "tvMoney": { "first": 140000000, "last": 50000000 },
+  "internationalSpots": {
+    "championsLeague": 4,
+    "europaLeague": 2,
+    "conferenceLeague": 1
+  }
+}

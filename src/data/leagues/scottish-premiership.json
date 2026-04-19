@@ -1,0 +1,17 @@
+{
+  "id": "scottish-premiership",
+  "name": "Scottish Premiership",
+  "shortName": "SPL",
+  "country": "Schottland",
+  "tier": 1,
+  "numberOfTeams": 12,
+  "matchdays": 33,
+  "promotion": { "automatic": 0, "playoff": 0 },
+  "relegation": { "automatic": 1, "playoff": 0 },
+  "tvMoney": { "first": 15000000, "last": 3000000 },
+  "internationalSpots": {
+    "championsLeague": 1,
+    "europaLeague": 1,
+    "conferenceLeague": 3
+  }
+}

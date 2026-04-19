@@ -1,0 +1,17 @@
+{
+  "id": "dritte-liga",
+  "name": "3. Liga",
+  "shortName": "3.L",
+  "country": "Deutschland",
+  "tier": 3,
+  "numberOfTeams": 20,
+  "matchdays": 38,
+  "promotion": { "automatic": 2, "playoff": 1 },
+  "relegation": { "automatic": 2, "playoff": 0 },
+  "tvMoney": { "first": 3000000, "last": 1000000 },
+  "internationalSpots": {
+    "championsLeague": 0,
+    "europaLeague": 0,
+    "conferenceLeague": 0
+  }
+}

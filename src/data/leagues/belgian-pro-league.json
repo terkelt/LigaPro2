@@ -1,0 +1,17 @@
+{
+  "id": "belgian-pro-league",
+  "name": "Jupiler Pro League",
+  "shortName": "JPL",
+  "country": "Belgien",
+  "tier": 1,
+  "numberOfTeams": 16,
+  "matchdays": 30,
+  "promotion": { "automatic": 0, "playoff": 0 },
+  "relegation": { "automatic": 1, "playoff": 1 },
+  "tvMoney": { "first": 25000000, "last": 6000000 },
+  "internationalSpots": {
+    "championsLeague": 1,
+    "europaLeague": 2,
+    "conferenceLeague": 2
+  }
+}

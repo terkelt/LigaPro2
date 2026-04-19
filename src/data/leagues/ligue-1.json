@@ -1,0 +1,17 @@
+{
+  "id": "ligue-1",
+  "name": "Ligue 1",
+  "shortName": "L1",
+  "country": "Frankreich",
+  "tier": 1,
+  "numberOfTeams": 18,
+  "matchdays": 34,
+  "promotion": { "automatic": 0, "playoff": 0 },
+  "relegation": { "automatic": 2, "playoff": 1 },
+  "tvMoney": { "first": 90000000, "last": 30000000 },
+  "internationalSpots": {
+    "championsLeague": 3,
+    "europaLeague": 3,
+    "conferenceLeague": 1
+  }
+}

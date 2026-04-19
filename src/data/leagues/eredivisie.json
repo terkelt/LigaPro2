@@ -1,0 +1,17 @@
+{
+  "id": "eredivisie",
+  "name": "Eredivisie",
+  "shortName": "ED",
+  "country": "Niederlande",
+  "tier": 1,
+  "numberOfTeams": 18,
+  "matchdays": 34,
+  "promotion": { "automatic": 0, "playoff": 0 },
+  "relegation": { "automatic": 1, "playoff": 1 },
+  "tvMoney": { "first": 40000000, "last": 12000000 },
+  "internationalSpots": {
+    "championsLeague": 2,
+    "europaLeague": 2,
+    "conferenceLeague": 2
+  }
+}
