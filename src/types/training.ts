@@ -202,7 +202,7 @@ export const TRAINING_CATALOG: TrainingDefinition[] = [
 ];
 
 export function getTrainingDef(type: TrainingType): TrainingDefinition {
-  return TRAINING_CATALOG.find((t) => t.id === type)!;
+  return TRAINING_CATALOG.find((t) => t.id === type) ?? TRAINING_CATALOG.find((t) => t.id === 'recovery')!;
 }
 
 // Legacy compat

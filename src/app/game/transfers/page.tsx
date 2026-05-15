@@ -474,11 +474,11 @@ export default function TransfersPage() {
   }, [scoutReports, allPlayers]);
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 animate-slide-up max-w-[1600px] mx-auto">
       {notification && (
         <div className={`flex items-center gap-2 px-4 py-3 rounded-lg text-sm font-medium ${
-          notification.type === "success" ? "bg-green-500/15 text-green-400 border border-green-500/30" :
-          notification.type === "warning" ? "bg-yellow-500/15 text-yellow-400 border border-yellow-500/30" :
+          notification.type === "success" ? "bg-emerald-500/15 text-emerald-400 border border-emerald-500/30" :
+          notification.type === "warning" ? "bg-amber-500/15 text-amber-400 border border-amber-500/30" :
           "bg-red-500/15 text-red-400 border border-red-500/30"
         }`}>
           <AlertCircle className="w-4 h-4 shrink-0" />{notification.text}
@@ -486,27 +486,37 @@ export default function TransfersPage() {
         </div>
       )}
 
-      <div className="flex items-center justify-between">
-        <h1 className="font-display text-2xl font-bold">Transfermarkt</h1>
-        <div className="flex items-center gap-3">
+      {/* ═══ Page Header ═══ */}
+      <div className="flex items-center justify-between px-1">
+        <div>
+          <h1 className="font-display text-xl font-bold tracking-tight">Transfermarkt</h1>
+          <p className="text-[11px] text-muted-foreground mt-0.5">Scouting, Angebote &amp; Verträge</p>
+        </div>
+        <div className="flex items-center gap-2">
           {transferWindow.isOpen ? (
-            <span className="text-xs px-2 py-1 rounded bg-green-500/20 text-green-400 font-medium">{transferWindow.type === "summer" ? "Sommer" : "Winter"}fenster offen</span>
+            <div className="metric-badge bg-emerald-500/10 text-emerald-400">
+              <span>{transferWindow.type === "summer" ? "Sommer" : "Winter"}fenster offen</span>
+            </div>
           ) : (
-            <span className="text-xs px-2 py-1 rounded bg-red-500/20 text-red-400 font-medium">Transferfenster geschlossen</span>
+            <div className="metric-badge bg-red-500/10 text-red-400">
+              <span>Transferfenster geschlossen</span>
+            </div>
           )}
-          <span className="text-xs text-muted-foreground">Budget: <span className="text-primary font-bold">{formatValue(budget)}</span></span>
+          <div className="metric-badge bg-primary/10 text-primary">
+            <span>Budget: <span className="font-bold">{formatValue(budget)}</span></span>
+          </div>
         </div>
       </div>
 
       <Tabs value={tab} onValueChange={setTab}>
-        <TabsList>
-          <TabsTrigger value="scouting"><Binoculars className="w-3.5 h-3.5 mr-1.5" />Scouting</TabsTrigger>
-          <TabsTrigger value="sell"><Tag className="w-3.5 h-3.5 mr-1.5" />Verkaufen</TabsTrigger>
-          <TabsTrigger value="offers" className="relative">
+        <TabsList className="bg-card/40 backdrop-blur-md border border-border/30 h-9">
+          <TabsTrigger value="scouting" className="text-[12px]"><Binoculars className="w-3.5 h-3.5 mr-1.5" />Scouting</TabsTrigger>
+          <TabsTrigger value="sell" className="text-[12px]"><Tag className="w-3.5 h-3.5 mr-1.5" />Verkaufen</TabsTrigger>
+          <TabsTrigger value="offers" className="text-[12px] relative">
             <Inbox className="w-3.5 h-3.5 mr-1.5" />Angebote
             {pendingCount > 0 && <span className="absolute -top-1 -right-1 w-4 h-4 rounded-full bg-accent text-[10px] font-bold flex items-center justify-center text-background">{pendingCount}</span>}
           </TabsTrigger>
-          <TabsTrigger value="history"><History className="w-3.5 h-3.5 mr-1.5" />Historie</TabsTrigger>
+          <TabsTrigger value="history" className="text-[12px]"><History className="w-3.5 h-3.5 mr-1.5" />Historie</TabsTrigger>
         </TabsList>
 
         {/* === TAB: SCOUTING === */}

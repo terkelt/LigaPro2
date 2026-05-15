@@ -133,15 +133,16 @@ export default function NewsPage() {
   const highCount = allNews.filter(n => n.importance === 'high' && !n.isRead).length;
 
   return (
-    <div className="space-y-4">
-      <div className="flex items-center justify-between">
+    <div className="space-y-4 animate-slide-up max-w-[1400px] mx-auto">
+      {/* ═══ Page Header ═══ */}
+      <div className="flex items-center justify-between px-1">
         <div>
-          <h1 className="font-display text-2xl font-bold">Neuigkeiten</h1>
-          <p className="text-xs text-muted-foreground mt-0.5">
+          <h1 className="font-display text-xl font-bold tracking-tight">Neuigkeiten</h1>
+          <p className="text-[11px] text-muted-foreground mt-0.5">
             {unreadCount > 0 ? `${unreadCount} ungelesen` : 'Alle gelesen'}
             {highCount > 0 && <span className="text-red-400 ml-2">({highCount} wichtig)</span>}
             {archiveNews.length > 0 && (
-              <span className="text-muted-foreground/60 ml-2">· {archiveNews.length} im Archiv</span>
+              <span className="text-muted-foreground/60 ml-2">&middot; {archiveNews.length} im Archiv</span>
             )}
           </p>
         </div>
@@ -150,7 +151,7 @@ export default function NewsPage() {
             <Button
               size="sm"
               variant="outline"
-              className="text-xs h-7"
+              className="text-xs h-8 rounded-lg"
               onClick={() => setShowArchive(!showArchive)}
             >
               {showArchive ? 'Archiv ausblenden' : 'Archiv anzeigen'}
@@ -160,7 +161,7 @@ export default function NewsPage() {
             <Button
               size="sm"
               variant="outline"
-              className="text-xs h-7"
+              className="text-xs h-8 rounded-lg"
               onClick={markAllNewsRead}
             >
               ✓ Alle gelesen

@@ -1,0 +1,169 @@
+­ƒÅƒ´©Å  Liga Pro Fussballmanager - Integration Tests
+==================================================
+
+=== 1. DATA LOADER TESTS ===
+Assertion failed: ÔØî Erwartet 3 Ligen, bekommen: 11
+Ô£à 11 Ligen geladen: BL, 2.BL, 3.L, PL, LL, SA, L1, ED, LP, JPL, SPL
+Ô£à Teams: BL=18, 2.BL=18, 3.Liga=20 (gesamt: 196)
+Assertion failed: ÔØî Erwartet 56 Teams gesamt, bekommen: 196
+Ô£à Keine doppelten Team-IDs
+Ô£à Alle 56 Teams haben vollst├ñndige Pflichtfelder
+Ô£à Lookup-Funktionen arbeiten korrekt
+Assertion failed: ÔØî Liga eredivisie: numberOfTeams=18 aber 16 Teams in JSON
+Ô£à Liga-Definitionen stimmen mit Team-Daten ├╝berein
+
+=== 2. PLAYER GENERATOR TESTS ===
+Assertion failed: ÔØî Bayern Kader: Erwartet 25, bekommen: 20
+Ô£à Bayern M├╝nchen: 20 Spieler generiert
+Assertion failed: ÔØî TW: Erwartet 3, bekommen: 2
+Assertion failed: ÔØî ST: Erwartet 3, bekommen: 2
+Ô£à Positionsverteilung: {"TW":2,"IV":4,"LV":2,"RV":2,"ZDM":1,"ZM":3,"ZOM":1,"RA":2,"LA":1,"ST":2}
+Ô£à Alle Spielerattribute im g├╝ltigen Bereich (1-99)
+Assertion failed: ÔØî Gesamtspieler: Erwartet 1400, bekommen: 2033
+Ô£à 2033 Spieler f├╝r alle 56 Teams generiert
+Ô£à Keine doppelten Spieler-IDs
+Ô£à Marktwert-Hierarchie: BL ├ÿ 10.6M > 3.Liga ├ÿ 0.8M
+Ô£à Generator ist deterministisch (gleicher Seed = gleiche Spieler)
+
+=== 3. SCHEDULE GENERATOR TESTS ===
+Assertion failed: ÔØî Erwartet 3 Schedules, bekommen: 11
+Ô£à 11 Spielpl├ñne generiert
+Ô£à BL: 306 Spiele (34 Spieltage)
+Ô£à BL: Jeder Spieltag hat 9 Spiele
+Ô£à BL: Kein Team spielt gegen sich selbst
+Ô£à BL: Alle Teams haben 34 Spiele mit ausgeglichener Heim/Ausw├ñrts-Bilanz
+Ô£à BL: Kein Team spielt doppelt an einem Spieltag
+Ô£à BL: Hin- und R├╝ckspiel f├╝r alle Paarungen vorhanden
+Ô£à BL: Spieltage chronologisch korrekt
+Ô£à 2.BL: 306 Spiele (34 Spieltage)
+Ô£à 2.BL: Jeder Spieltag hat 9 Spiele
+Ô£à 2.BL: Kein Team spielt gegen sich selbst
+Ô£à 2.BL: Alle Teams haben 34 Spiele mit ausgeglichener Heim/Ausw├ñrts-Bilanz
+Ô£à 2.BL: Kein Team spielt doppelt an einem Spieltag
+Ô£à 2.BL: Hin- und R├╝ckspiel f├╝r alle Paarungen vorhanden
+Ô£à 2.BL: Spieltage chronologisch korrekt
+Ô£à 3.L: 380 Spiele (38 Spieltage)
+Ô£à 3.L: Jeder Spieltag hat 10 Spiele
+Ô£à 3.L: Kein Team spielt gegen sich selbst
+Ô£à 3.L: Alle Teams haben 38 Spiele mit ausgeglichener Heim/Ausw├ñrts-Bilanz
+Ô£à 3.L: Kein Team spielt doppelt an einem Spieltag
+Ô£à 3.L: Hin- und R├╝ckspiel f├╝r alle Paarungen vorhanden
+Ô£à 3.L: Spieltage chronologisch korrekt
+Ô£à PL: 380 Spiele (38 Spieltage)
+Ô£à PL: Jeder Spieltag hat 10 Spiele
+Ô£à PL: Kein Team spielt gegen sich selbst
+Ô£à PL: Alle Teams haben 38 Spiele mit ausgeglichener Heim/Ausw├ñrts-Bilanz
+Ô£à PL: Kein Team spielt doppelt an einem Spieltag
+Ô£à PL: Hin- und R├╝ckspiel f├╝r alle Paarungen vorhanden
+Ô£à PL: Spieltage chronologisch korrekt
+Ô£à LL: 380 Spiele (38 Spieltage)
+Ô£à LL: Jeder Spieltag hat 10 Spiele
+Ô£à LL: Kein Team spielt gegen sich selbst
+Ô£à LL: Alle Teams haben 38 Spiele mit ausgeglichener Heim/Ausw├ñrts-Bilanz
+Ô£à LL: Kein Team spielt doppelt an einem Spieltag
+Ô£à LL: Hin- und R├╝ckspiel f├╝r alle Paarungen vorhanden
+Ô£à LL: Spieltage chronologisch korrekt
+Ô£à SA: 380 Spiele (38 Spieltage)
+Ô£à SA: Jeder Spieltag hat 10 Spiele
+Ô£à SA: Kein Team spielt gegen sich selbst
+Ô£à SA: Alle Teams haben 38 Spiele mit ausgeglichener Heim/Ausw├ñrts-Bilanz
+Ô£à SA: Kein Team spielt doppelt an einem Spieltag
+Ô£à SA: Hin- und R├╝ckspiel f├╝r alle Paarungen vorhanden
+Ô£à SA: Spieltage chronologisch korrekt
+Ô£à L1: 306 Spiele (34 Spieltage)
+Ô£à L1: Jeder Spieltag hat 9 Spiele
+Ô£à L1: Kein Team spielt gegen sich selbst
+Ô£à L1: Alle Teams haben 34 Spiele mit ausgeglichener Heim/Ausw├ñrts-Bilanz
+Ô£à L1: Kein Team spielt doppelt an einem Spieltag
+Ô£à L1: Hin- und R├╝ckspiel f├╝r alle Paarungen vorhanden
+Ô£à L1: Spieltage chronologisch korrekt
+Ô£à ED: 240 Spiele (30 Spieltage)
+Ô£à ED: Jeder Spieltag hat 8 Spiele
+Ô£à ED: Kein Team spielt gegen sich selbst
+Ô£à ED: Alle Teams haben 30 Spiele mit ausgeglichener Heim/Ausw├ñrts-Bilanz
+Ô£à ED: Kein Team spielt doppelt an einem Spieltag
+Ô£à ED: Hin- und R├╝ckspiel f├╝r alle Paarungen vorhanden
+Ô£à ED: Spieltage chronologisch korrekt
+Ô£à LP: 306 Spiele (34 Spieltage)
+Ô£à LP: Jeder Spieltag hat 9 Spiele
+Ô£à LP: Kein Team spielt gegen sich selbst
+Ô£à LP: Alle Teams haben 34 Spiele mit ausgeglichener Heim/Ausw├ñrts-Bilanz
+Ô£à LP: Kein Team spielt doppelt an einem Spieltag
+Ô£à LP: Hin- und R├╝ckspiel f├╝r alle Paarungen vorhanden
+Ô£à LP: Spieltage chronologisch korrekt
+Ô£à JPL: 240 Spiele (30 Spieltage)
+Ô£à JPL: Jeder Spieltag hat 8 Spiele
+Ô£à JPL: Kein Team spielt gegen sich selbst
+Ô£à JPL: Alle Teams haben 30 Spiele mit ausgeglichener Heim/Ausw├ñrts-Bilanz
+Ô£à JPL: Kein Team spielt doppelt an einem Spieltag
+Ô£à JPL: Hin- und R├╝ckspiel f├╝r alle Paarungen vorhanden
+Ô£à JPL: Spieltage chronologisch korrekt
+Ô£à SPL: 132 Spiele (22 Spieltage)
+Ô£à SPL: Jeder Spieltag hat 6 Spiele
+Ô£à SPL: Kein Team spielt gegen sich selbst
+Ô£à SPL: Alle Teams haben 22 Spiele mit ausgeglichener Heim/Ausw├ñrts-Bilanz
+Ô£à SPL: Kein Team spielt doppelt an einem Spieltag
+Ô£à SPL: Hin- und R├╝ckspiel f├╝r alle Paarungen vorhanden
+Ô£à SPL: Spieltage chronologisch korrekt
+
+=== 4. MATCH ENGINE TESTS ===
+Ô£à Match simuliert: FCB 0:0 BVB
+Ô£à Ergebnis hat alle Pflichtfelder, 62 Events
+Ô£à Stats plausibel: Ballbesitz 47/53%, Sch├╝sse 2/5
+Ô£à 22 Spieler-Ratings im Bereich 3.0-10.0
+Ô£à Tor-Events stimmen mit Ergebnis ├╝berein
+Ô£à Wetter: Sonnig, 21┬░C
+Ô£à Man of the Match: bayern-muenchen-p16
+Ô£à Match Engine ist deterministisch
+Ô£à Massentest (100 Spiele): ├ÿ 2.7 Tore, Max 7 Tore
+
+=== 5. DAY ADVANCE TESTS ===
+Ô£à advanceDay: Datum 2024-08-16 ÔåÆ 2024-08-17, 98 Ergebnisse
+Ô£à advanceToNextEvent: 2024-08-16 ÔåÆ 2024-08-18
+Ô£à 98 Spiele nach advanceToNextEvent simuliert
+Ô£à Tabelle wurde aktualisiert
+Ô£à Nach 5x advanceToNextEvent: 294 gespielte Spiele, Datum: 2024-09-01
+Ô£à BL: Tabelle ist konsistent (Punkte, Spiele, Tordifferenz)
+Ô£à BL: Tabelle korrekt sortiert
+Ô£à 2.BL: Tabelle ist konsistent (Punkte, Spiele, Tordifferenz)
+Ô£à 2.BL: Tabelle korrekt sortiert
+Ô£à 3.L: Tabelle ist konsistent (Punkte, Spiele, Tordifferenz)
+Ô£à 3.L: Tabelle korrekt sortiert
+Ô£à PL: Tabelle ist konsistent (Punkte, Spiele, Tordifferenz)
+Ô£à PL: Tabelle korrekt sortiert
+Ô£à LL: Tabelle ist konsistent (Punkte, Spiele, Tordifferenz)
+Ô£à LL: Tabelle korrekt sortiert
+Ô£à SA: Tabelle ist konsistent (Punkte, Spiele, Tordifferenz)
+Ô£à SA: Tabelle korrekt sortiert
+Ô£à L1: Tabelle ist konsistent (Punkte, Spiele, Tordifferenz)
+Ô£à L1: Tabelle korrekt sortiert
+Ô£à ED: Tabelle ist konsistent (Punkte, Spiele, Tordifferenz)
+Ô£à ED: Tabelle korrekt sortiert
+Ô£à LP: Tabelle ist konsistent (Punkte, Spiele, Tordifferenz)
+Ô£à LP: Tabelle korrekt sortiert
+Ô£à JPL: Tabelle ist konsistent (Punkte, Spiele, Tordifferenz)
+Ô£à JPL: Tabelle korrekt sortiert
+Ô£à SPL: Tabelle ist konsistent (Punkte, Spiele, Tordifferenz)
+Ô£à SPL: Tabelle korrekt sortiert
+Ô£à 25 News-Eintr├ñge generiert
+Ô£à 12 Bayern-Spieler mit Eins├ñtzen
+
+=== 6. ROUTEN-TESTS ===
+Ô£à 18 Routen definiert
+Ô£à 13 Sidebar-Eintr├ñge
+  ­ƒôä /game/dashboard
+  ­ƒôä /game/squad
+  ­ƒôä /game/tactics
+  ­ƒôä /game/schedule
+  ­ƒôä /game/table
+  ­ƒôä /game/transfers
+  ­ƒôä /game/finances
+  ­ƒôä /game/training
+  ­ƒôä /game/youth
+  ­ƒôä /game/staff
+  ­ƒôä /game/stats
+  ­ƒôä /game/manager
+  ­ƒôä /game/news
+
+==================================================
+­ƒÄë ALLE TESTS ABGESCHLOSSEN

@@ -461,26 +461,29 @@ export default function TacticsPage() {
   }, 0);
 
   return (
-    <div className="space-y-4">
-      {/* Header */}
-      <div className="flex items-center justify-between flex-wrap gap-2">
-        <div className="flex items-center gap-4">
-          <h1 className="font-display text-2xl font-bold">Taktik</h1>
-          <div className="flex items-center gap-1">
+    <div className="space-y-4 animate-slide-up max-w-[1600px] mx-auto">
+      {/* ═══ Page Header ═══ */}
+      <div className="flex items-center justify-between flex-wrap gap-2 px-1">
+        <div className="flex items-center gap-3">
+          <div>
+            <h1 className="font-display text-xl font-bold tracking-tight">Taktik</h1>
+            <p className="text-[11px] text-muted-foreground mt-0.5">Aufstellung &amp; Formation</p>
+          </div>
+          <div className="flex items-center gap-1 ml-2">
             {(['a', 'b', 'c'] as const).map((k) => (
-              <Button key={k} size="sm" variant={tacticKey === k ? "default" : "outline"} className="text-xs w-8 h-7" onClick={() => setActiveTactic(k)}>
+              <Button key={k} size="sm" variant={tacticKey === k ? "default" : "outline"} className="text-xs w-8 h-7 rounded-lg" onClick={() => setActiveTactic(k)}>
                 {k.toUpperCase()}
               </Button>
             ))}
           </div>
-          <span className="text-xs text-muted-foreground">
-            <span className={filledCount >= 11 ? "text-green-400 font-bold" : "text-amber-400 font-bold"}>{filledCount}/11</span>
+          <div className="metric-badge bg-secondary/40">
+            <span className={filledCount >= 11 ? "text-emerald-400 font-bold" : "text-amber-400 font-bold"}>{filledCount}/11</span>
             {oopCount > 0 && <span className="text-orange-400 ml-2">⚠ {oopCount} falsche Pos.</span>}
-          </span>
+          </div>
         </div>
         <div className="flex items-center gap-2">
           <Select value={formation} onValueChange={(v) => setFormation(v as FormationType)}>
-            <SelectTrigger className="w-36 h-8 text-xs">
+            <SelectTrigger className="w-36 h-8 text-xs rounded-lg bg-card/40 border-border/40">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>

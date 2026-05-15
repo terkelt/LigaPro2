@@ -531,40 +531,43 @@ export default function SquadPage() {
   if (!team) return null;
 
   return (
-    <div className="space-y-4">
-      <div className="flex items-center justify-between">
+    <div className="space-y-4 animate-slide-up max-w-[1600px] mx-auto">
+      {/* ═══ Page Header ═══ */}
+      <div className="flex items-center justify-between px-1">
         <div className="flex items-center gap-3">
-          <h1 className="font-display text-2xl font-bold">Kader – {team?.name}</h1>
+          <div>
+            <h1 className="font-display text-xl font-bold tracking-tight">Kader</h1>
+            <p className="text-[11px] text-muted-foreground mt-0.5">{team?.name} &middot; {players.length} Spieler</p>
+          </div>
           <TraitLegendButton />
         </div>
         <div className="flex items-center gap-2">
-          <Button variant="outline" size="sm" className="text-xs gap-1.5" onClick={() => setShowCompare(true)}>
+          <Button variant="outline" size="sm" className="text-xs gap-1.5 h-8 rounded-lg" onClick={() => setShowCompare(true)}>
             <ArrowRightLeft className="w-3.5 h-3.5" /> Vergleichen
           </Button>
-          <span className="text-sm text-muted-foreground">{players.length} Spieler</span>
         </div>
       </div>
 
       <Tabs value={tab} onValueChange={setTab}>
-        <TabsList>
-          <TabsTrigger value="roster">Kaderliste</TabsTrigger>
-          <TabsTrigger value="stats">Statistiken</TabsTrigger>
+        <TabsList className="bg-card/40 backdrop-blur-md border border-border/30 h-9">
+          <TabsTrigger value="roster" className="text-[12px]">Kaderliste</TabsTrigger>
+          <TabsTrigger value="stats" className="text-[12px]">Statistiken</TabsTrigger>
         </TabsList>
 
-        <TabsContent value="roster" className="mt-4 space-y-3">
+        <TabsContent value="roster" className="mt-3 space-y-3">
           {/* Filters */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
             <div className="relative flex-1 max-w-xs">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
               <Input
                 placeholder="Spieler suchen..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="pl-9"
+                className="pl-9 h-8 text-[12px] rounded-lg bg-card/40 border-border/40"
               />
             </div>
             <Select value={posFilter} onValueChange={setPosFilter}>
-              <SelectTrigger className="w-44">
+              <SelectTrigger className="w-44 h-8 text-[12px] rounded-lg bg-card/40 border-border/40">
                 <SelectValue placeholder="Position" />
               </SelectTrigger>
               <SelectContent>
@@ -577,7 +580,7 @@ export default function SquadPage() {
           </div>
 
           {/* Table */}
-          <Card className="bg-card border-border overflow-hidden">
+          <div className="tile overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
@@ -695,11 +698,11 @@ export default function SquadPage() {
                 </tbody>
               </table>
             </div>
-          </Card>
+          </div>
         </TabsContent>
 
-        <TabsContent value="stats" className="mt-4">
-          <Card className="bg-card border-border overflow-hidden">
+        <TabsContent value="stats" className="mt-3">
+          <div className="tile overflow-hidden">
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
                 <thead>
@@ -747,7 +750,7 @@ export default function SquadPage() {
                 </tbody>
               </table>
             </div>
-          </Card>
+          </div>
         </TabsContent>
       </Tabs>
 

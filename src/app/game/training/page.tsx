@@ -1,7 +1,6 @@
 "use client";
 
 import { useMemo } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { TRAINING_CATALOG, TrainingType, TrainingDefinition } from "@/types/training";
 import { Dumbbell, TrendingUp, TrendingDown, Zap, Heart, AlertTriangle, History, Check } from "lucide-react";
 import { useTraining } from "@/store/selectors";
@@ -30,16 +29,23 @@ export default function TrainingPage() {
   if (!plan) return null;
 
   return (
-    <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <h1 className="font-display text-2xl font-bold">Wochentraining</h1>
-        <span className="text-xs text-muted-foreground">
-          Training wird jeden <span className="text-primary font-medium">Montag</span> automatisch ausgeführt
-        </span>
+    <div className="space-y-4 animate-slide-up max-w-[1400px] mx-auto">
+      {/* ═══ Page Header ═══ */}
+      <div className="flex items-center justify-between px-1">
+        <div>
+          <h1 className="font-display text-xl font-bold tracking-tight">Wochentraining</h1>
+          <p className="text-[11px] text-muted-foreground mt-0.5">
+            Wird jeden <span className="text-primary font-medium">Montag</span> automatisch ausgeführt
+          </p>
+        </div>
+        <div className="metric-badge bg-primary/10 text-primary">
+          <Dumbbell className="w-3 h-3" />
+          <span>{TRAINING_CATALOG.length} Programme</span>
+        </div>
       </div>
 
-      {/* Training selection grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+      {/* ═══ Training Selection Grid ═══ */}
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 stagger-children">
         {TRAINING_CATALOG.map((def) => (
           <TrainingCard
             key={def.id}
@@ -50,28 +56,35 @@ export default function TrainingPage() {
         ))}
       </div>
 
-      {/* Selected training detail */}
-      <Card className="bg-card border-border border-primary/30">
-        <CardHeader className="pb-2">
-          <CardTitle className="text-sm flex items-center gap-2">
-            <Dumbbell className="w-4 h-4 text-primary" />
-            Aktives Training: <span className="text-primary">{selectedDef.name}</span>
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p className="text-sm text-muted-foreground mb-4">{selectedDef.description}</p>
+      {/* ═══ Selected Training Detail ═══ */}
+      <div className="tile overflow-hidden">
+        <div className="h-0.5 bg-primary/40" />
+        <div className="p-4">
+          <div className="flex items-center gap-2 mb-3">
+            <div className="w-8 h-8 rounded-lg bg-primary/15 flex items-center justify-center text-base">
+              {selectedDef.icon}
+            </div>
+            <div className="flex-1">
+              <div className="section-label">
+                <span>Aktives Training</span>
+              </div>
+              <h2 className="text-base font-bold tracking-tight text-primary">{selectedDef.name}</h2>
+            </div>
+          </div>
+          <p className="text-[12px] text-muted-foreground mb-4">{selectedDef.description}</p>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             {/* Positive effects */}
             {selectedDef.positiveEffects.length > 0 && (
-              <div className="space-y-1.5">
-                <p className="text-xs font-medium text-green-400 flex items-center gap-1">
-                  <TrendingUp className="w-3.5 h-3.5" /> Verbesserungen
-                </p>
+              <div className="surface-inset p-3 space-y-1.5">
+                <div className="section-label text-emerald-400/90">
+                  <TrendingUp className="w-3 h-3" />
+                  <span>Verbesserungen</span>
+                </div>
                 {selectedDef.positiveEffects.map((eff) => (
-                  <div key={eff.attribute} className="flex items-center justify-between text-sm">
-                    <span>{eff.label}</span>
-                    <span className="text-green-400 font-mono font-bold">+{eff.value}</span>
+                  <div key={eff.attribute} className="flex items-center justify-between text-[12px]">
+                    <span className="text-foreground/90">{eff.label}</span>
+                    <span className="text-emerald-400 font-mono font-bold">+{eff.value}</span>
                   </div>
                 ))}
               </div>
@@ -79,13 +92,14 @@ export default function TrainingPage() {
 
             {/* Negative effects */}
             {selectedDef.negativeEffects.length > 0 && (
-              <div className="space-y-1.5">
-                <p className="text-xs font-medium text-red-400 flex items-center gap-1">
-                  <TrendingDown className="w-3.5 h-3.5" /> Verschlechterungen
-                </p>
+              <div className="surface-inset p-3 space-y-1.5">
+                <div className="section-label text-red-400/90">
+                  <TrendingDown className="w-3 h-3" />
+                  <span>Verschlechterungen</span>
+                </div>
                 {selectedDef.negativeEffects.map((eff) => (
-                  <div key={eff.attribute} className="flex items-center justify-between text-sm">
-                    <span>{eff.label}</span>
+                  <div key={eff.attribute} className="flex items-center justify-between text-[12px]">
+                    <span className="text-foreground/90">{eff.label}</span>
                     <span className="text-red-400 font-mono font-bold">{eff.value}</span>
                   </div>
                 ))}
@@ -94,53 +108,51 @@ export default function TrainingPage() {
           </div>
 
           {/* Stats row */}
-          <div className="flex items-center gap-4 mt-4 pt-3 border-t border-border/50 text-xs">
-            <span className="flex items-center gap-1 text-yellow-400">
+          <div className="flex items-center flex-wrap gap-2 mt-4 pt-3 border-t border-border/30">
+            <span className="metric-badge bg-amber-500/10 text-amber-400">
               <Zap className="w-3 h-3" /> {selectedDef.xpReward} XP
             </span>
-            <span className="flex items-center gap-1 text-muted-foreground">
+            <span className="metric-badge bg-secondary/60 text-muted-foreground">
               <Heart className="w-3 h-3" />
-              Kondition: {selectedDef.conditionCost > 0 ? `-${selectedDef.conditionCost}` : `+${Math.abs(selectedDef.conditionCost)}`}
+              Kondition {selectedDef.conditionCost > 0 ? `-${selectedDef.conditionCost}` : `+${Math.abs(selectedDef.conditionCost)}`}
             </span>
             {selectedDef.moraleEffect !== 0 && (
-              <span className={`flex items-center gap-1 ${selectedDef.moraleEffect > 0 ? "text-green-400" : "text-red-400"}`}>
-                Moral: {selectedDef.moraleEffect > 0 ? "+" : ""}{selectedDef.moraleEffect}
+              <span className={`metric-badge ${selectedDef.moraleEffect > 0 ? "bg-emerald-500/10 text-emerald-400" : "bg-red-500/10 text-red-400"}`}>
+                Moral {selectedDef.moraleEffect > 0 ? "+" : ""}{selectedDef.moraleEffect}
               </span>
             )}
             {selectedDef.injuryRiskPercent > 0 && (
-              <span className="flex items-center gap-1 text-orange-400">
-                <AlertTriangle className="w-3 h-3" /> {selectedDef.injuryRiskPercent}% Verletzungsrisiko
+              <span className="metric-badge bg-orange-500/10 text-orange-400">
+                <AlertTriangle className="w-3 h-3" /> {selectedDef.injuryRiskPercent}% Risiko
               </span>
             )}
             {selectedDef.gkOnly && (
-              <span className="text-blue-400">Nur Torhüter</span>
+              <span className="metric-badge bg-blue-500/10 text-blue-400">Nur Torhüter</span>
             )}
           </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
 
-      {/* History */}
+      {/* ═══ History ═══ */}
       {history.length > 0 && (
-        <Card className="bg-card border-border">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-sm text-muted-foreground flex items-center gap-2">
-              <History className="w-4 h-4" /> Trainingshistorie
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="flex flex-wrap gap-2">
-              {history.map((h, i) => {
-                const def = TRAINING_CATALOG.find((t) => t.id === h.type);
-                return (
-                  <div key={i} className="text-xs px-2 py-1 rounded bg-secondary/30 border border-border/50">
-                    <span className="text-muted-foreground">{h.week}</span>
-                    <span className="ml-1.5">{def?.icon} {def?.name}</span>
-                  </div>
-                );
-              })}
-            </div>
-          </CardContent>
-        </Card>
+        <div className="tile p-4">
+          <div className="section-label mb-3">
+            <History className="w-3.5 h-3.5" />
+            <span>Trainingshistorie</span>
+          </div>
+          <div className="flex flex-wrap gap-1.5">
+            {history.map((h, i) => {
+              const def = TRAINING_CATALOG.find((t) => t.id === h.type);
+              return (
+                <div key={i} className="text-[11px] px-2 py-1 rounded-lg bg-secondary/40 border border-border/30 flex items-center gap-1.5">
+                  <span className="text-muted-foreground font-mono text-[10px]">{h.week}</span>
+                  <span>{def?.icon}</span>
+                  <span className="font-medium">{def?.name}</span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
       )}
     </div>
   );
@@ -148,28 +160,30 @@ export default function TrainingPage() {
 
 function TrainingCard({ def, isSelected, onSelect }: { def: TrainingDefinition; isSelected: boolean; onSelect: () => void }) {
   return (
-    <Card
-      className={`bg-card border-border cursor-pointer transition-all hover:border-primary/50 ${
-        isSelected ? "ring-2 ring-primary border-primary" : ""
-      }`}
+    <button
       onClick={onSelect}
+      className={`tile-interactive p-3.5 text-left relative ${
+        isSelected ? "border-primary/60 bg-primary/8 ring-1 ring-primary/30" : ""
+      }`}
     >
-      <CardContent className="p-4">
-        <div className="flex items-start justify-between mb-2">
-          <span className="text-2xl">{def.icon}</span>
-          {isSelected && <Check className="w-4 h-4 text-primary" />}
-        </div>
-        <h3 className="text-sm font-bold mb-1">{def.name}</h3>
-        <div className="flex items-center gap-2 text-[10px]">
-          <span className="text-yellow-400">{def.xpReward} XP</span>
-          {def.positiveEffects.length > 0 && (
-            <span className="text-green-400">+{def.positiveEffects.length} Buffs</span>
-          )}
-          {def.negativeEffects.length > 0 && (
-            <span className="text-red-400">{def.negativeEffects.length} Debuffs</span>
-          )}
-        </div>
-      </CardContent>
-    </Card>
+      <div className="flex items-start justify-between mb-2">
+        <span className="text-2xl">{def.icon}</span>
+        {isSelected && (
+          <div className="w-5 h-5 rounded-full bg-primary flex items-center justify-center">
+            <Check className="w-3 h-3 text-primary-foreground" />
+          </div>
+        )}
+      </div>
+      <h3 className="text-[13px] font-semibold mb-1.5 leading-tight">{def.name}</h3>
+      <div className="flex items-center flex-wrap gap-1">
+        <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-400 font-bold">{def.xpReward} XP</span>
+        {def.positiveEffects.length > 0 && (
+          <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-400 font-bold">+{def.positiveEffects.length}</span>
+        )}
+        {def.negativeEffects.length > 0 && (
+          <span className="text-[9px] font-mono px-1.5 py-0.5 rounded bg-red-500/10 text-red-400 font-bold">−{def.negativeEffects.length}</span>
+        )}
+      </div>
+    </button>
   );
 }

@@ -244,7 +244,7 @@ export function advanceDay(state: GameState, liveMatchResult?: MatchResult): Gam
     let updatedInteractions = [...(state.interactions ?? [])];
 
     // Monday = apply weekly training + decay old boosts
-    if (getDayOfWeek(currentDate) === 1 && state.training.lastTrainingDate !== currentDate) {
+    if (state.training?.selectedTraining && getDayOfWeek(currentDate) === 1 && state.training.lastTrainingDate !== currentDate) {
       // Decay existing boosts first
       updatedPlayers = decayTrainingBoosts(updatedPlayers);
 
@@ -272,13 +272,13 @@ export function advanceDay(state: GameState, liveMatchResult?: MatchResult): Gam
         ...updatedTraining,
         lastTrainingDate: currentDate,
         weekHistory: [
-          ...updatedTraining.weekHistory.slice(-20),
+          ...(updatedTraining.weekHistory ?? []).slice(-20),
           { week: currentDate, type: state.training.selectedTraining },
         ],
       };
 
       // Generate detailed training news
-      const trainingName = state.training.selectedTraining;
+      const trainingName = state.training.selectedTraining ?? 'recovery';
       const ATTR_DE: Record<string, string> = {
         pace: 'Tempo', stamina: 'Ausdauer', strength: 'Stärke', shooting: 'Schuss',
         finishing: 'Abschluss', passing: 'Passen', crossing: 'Flanken', dribbling: 'Dribbling',

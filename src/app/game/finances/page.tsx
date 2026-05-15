@@ -137,94 +137,81 @@ export default function FinancesPage() {
   if (!team || !finances) return null;
 
   return (
-    <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <h1 className="font-display text-2xl font-bold">Finanzen</h1>
-        <div className="flex items-center gap-2">
-          <span className={`text-xs px-2 py-1 rounded-full font-medium ${
-            transferWindow.isOpen
-              ? "bg-green-500/20 text-green-400"
-              : "bg-red-500/20 text-red-400"
-          }`}>
-            Transferfenster: {transferWindow.isOpen
-              ? (transferWindow.type === "summer" ? "Sommer (offen)" : "Winter (offen)")
-              : "geschlossen"}
-          </span>
+    <div className="space-y-4 animate-slide-up max-w-[1400px] mx-auto">
+      {/* ═══ Page Header ═══ */}
+      <div className="flex items-center justify-between px-1">
+        <div>
+          <h1 className="font-display text-xl font-bold tracking-tight">Finanzen</h1>
+          <p className="text-[11px] text-muted-foreground mt-0.5">{team?.name} &middot; Budget &amp; Sponsoren</p>
+        </div>
+        <div className={`metric-badge ${
+          transferWindow.isOpen ? "bg-emerald-500/10 text-emerald-400" : "bg-red-500/10 text-red-400"
+        }`}>
+          <Clock className="w-3 h-3" />
+          <span>Transferfenster: {transferWindow.isOpen
+            ? (transferWindow.type === "summer" ? "Sommer offen" : "Winter offen")
+            : "geschlossen"}</span>
         </div>
       </div>
 
-      {/* KPI Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card className="bg-card border-border">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-xs text-muted-foreground flex items-center gap-1.5">
-              <Wallet className="w-3.5 h-3.5" />Kontostand
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className={`text-2xl font-bold ${finances.balance >= 0 ? "text-primary" : "text-red-400"}`}>
-              {fmt(finances.balance)}
-            </p>
-          </CardContent>
-        </Card>
+      {/* ═══ KPI Tiles ═══ */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 stagger-children">
+        <div className="tile-stat p-4">
+          <div className="section-label mb-2">
+            <Wallet className="w-3 h-3" />
+            <span>Kontostand</span>
+          </div>
+          <p className={`text-2xl font-display font-black leading-none ${finances.balance >= 0 ? "text-primary" : "text-red-400"}`}>
+            {fmt(finances.balance)}
+          </p>
+          <p className="text-[9px] text-muted-foreground mt-1.5 font-mono">aktuell verfügbar</p>
+        </div>
 
-        <Card className="bg-card border-border">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-xs text-muted-foreground flex items-center gap-1.5">
-              <TrendingUp className="w-3.5 h-3.5" />Transferbudget
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-2xl font-bold text-green-400">{fmt(finances.transferBudget)}</p>
-          </CardContent>
-        </Card>
+        <div className="tile-stat p-4">
+          <div className="section-label mb-2">
+            <TrendingUp className="w-3 h-3" />
+            <span>Transferbudget</span>
+          </div>
+          <p className="text-2xl font-display font-black text-emerald-400 leading-none">{fmt(finances.transferBudget)}</p>
+          <p className="text-[9px] text-muted-foreground mt-1.5 font-mono">für Neuzugänge</p>
+        </div>
 
-        <Card className="bg-card border-border">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-xs text-muted-foreground flex items-center gap-1.5">
-              <TrendingDown className="w-3.5 h-3.5" />Gehälter/Monat
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-2xl font-bold">{fmt(finances.totalSalaryPerMonth)}</p>
-            <p className="text-xs text-muted-foreground mt-1">
-              Budget: {fmt(finances.salaryBudget)}
-            </p>
-          </CardContent>
-        </Card>
+        <div className="tile-stat p-4">
+          <div className="section-label mb-2">
+            <TrendingDown className="w-3 h-3" />
+            <span>Gehälter / Monat</span>
+          </div>
+          <p className="text-2xl font-display font-black leading-none">{fmt(finances.totalSalaryPerMonth)}</p>
+          <p className="text-[9px] text-muted-foreground mt-1.5 font-mono">Budget: {fmt(finances.salaryBudget)}</p>
+        </div>
 
-        <Card className="bg-card border-border">
-          <CardHeader className="pb-2">
-            <CardTitle className="text-xs text-muted-foreground flex items-center gap-1.5">
-              <Handshake className="w-3.5 h-3.5" />Sponsoren-Einnahmen
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-2xl font-bold text-blue-400">{fmt(totalSponsorIncome)}</p>
-            <p className="text-xs text-muted-foreground mt-1">
-              {activeSponsors.length} aktive Verträge
-            </p>
-          </CardContent>
-        </Card>
+        <div className="tile-stat p-4">
+          <div className="section-label mb-2">
+            <Handshake className="w-3 h-3" />
+            <span>Sponsoren / Saison</span>
+          </div>
+          <p className="text-2xl font-display font-black text-blue-400 leading-none">{fmt(totalSponsorIncome)}</p>
+          <p className="text-[9px] text-muted-foreground mt-1.5 font-mono">{activeSponsors.length} Verträge</p>
+        </div>
       </div>
 
-      {/* Tabs: Monatsübersicht / Sponsoren / Stadion */}
+      {/* ═══ Tabs: Monatsübersicht / Sponsoren / Stadion ═══ */}
       <Tabs defaultValue="monthly" className="w-full">
-        <TabsList>
-          <TabsTrigger value="monthly">Monatsübersicht</TabsTrigger>
-          <TabsTrigger value="sponsors">
+        <TabsList className="bg-card/40 backdrop-blur-md border border-border/30 h-9">
+          <TabsTrigger value="monthly" className="text-[12px]">Monatsübersicht</TabsTrigger>
+          <TabsTrigger value="sponsors" className="text-[12px]">
             Sponsoren
             {(sponsorOffers as import("@/types/finance").SponsorOffer[]).length > 0 && (
-              <span className="ml-1.5 bg-primary text-primary-foreground text-[10px] px-1.5 py-0.5 rounded-full">
+              <span className="ml-1.5 bg-primary text-primary-foreground text-[9px] px-1.5 py-0.5 rounded-full font-bold">
                 {(sponsorOffers as import("@/types/finance").SponsorOffer[]).length}
               </span>
             )}
           </TabsTrigger>
-          <TabsTrigger value="stadium">Stadion</TabsTrigger>
+          <TabsTrigger value="stadium" className="text-[12px]">Stadion</TabsTrigger>
         </TabsList>
 
         {/* Monthly Overview */}
-        <TabsContent value="monthly" className="space-y-4">
+        <TabsContent value="monthly" className="space-y-3 mt-3">
           {monthlyData.length === 0 ? (
             <Card className="bg-card border-border">
               <CardContent className="flex flex-col items-center justify-center py-12 text-muted-foreground">
