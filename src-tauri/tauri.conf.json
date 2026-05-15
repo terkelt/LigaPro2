@@ -1,7 +1,7 @@
 {
   "$schema": "https://raw.githubusercontent.com/nicoviii/tauri-v2/tauri-v2-schema/schema.json",
   "productName": "Liga Pro",
-  "version": "0.31.0",
+  "version": "0.34.0",
   "identifier": "com.ligapro.app",
   "build": {
     "frontendDist": "../dist",

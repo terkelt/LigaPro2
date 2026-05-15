@@ -20,6 +20,12 @@
 # tauri
 src-tauri/target/
 
+# release artifacts (built EXEs / installers)
+/release/
+build.log
+test.log
+push.log
+
 # misc
 .DS_Store
 *.pem

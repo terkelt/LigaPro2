@@ -1,6 +1,6 @@
 [package]
 name = "liga-pro"
-version = "0.31.0"
+version = "0.34.0"
 description = "Liga Pro Fußballmanager"
 authors = ["you"]
 edition = "2021"
